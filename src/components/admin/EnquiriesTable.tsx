@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { format } from "date-fns";
-import { Phone, Mail, CheckCircle2, ChevronDown, ChevronUp, UserPlus, Send, RefreshCw, Star } from "lucide-react";
+import { Phone, Mail, CheckCircle2, ChevronDown, ChevronUp, UserPlus, Send, RefreshCw, Star, Download } from "lucide-react";
 
 interface EnquiriesTableProps {
   enquiries: any[];
@@ -27,6 +27,29 @@ export default function EnquiriesTable({
     } else {
       setExpandedEnquiryId(id);
     }
+  };
+
+  const exportToCSV = () => {
+    const headers = ["Lead Name", "Phone", "Email", "Service Requested", "Brief Message", "Status", "Received Date"];
+    const rows = enquiries.map(e => [
+      `"${e.name.replace(/"/g, '""')}"`,
+      `"${e.phone}"`,
+      `"${e.email || ''}"`,
+      `"${e.service}"`,
+      `"${e.message.replace(/"/g, '""')}"`,
+      `"${e.status.toUpperCase()}"`,
+      `"${format(new Date(e.createdAt), "yyyy-MM-dd HH:mm")}"`
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + [headers.join(","), ...rows.map(row => row.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Kloche_Leads_Enquiries_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const getStatusBadge = (status: string) => {
@@ -74,12 +97,22 @@ export default function EnquiriesTable({
           ))}
         </div>
 
-        <button
-          onClick={onRefresh}
-          className="flex items-center gap-1.5 py-1.5 px-3 bg-white border border-[#E2DDD5] text-xs uppercase tracking-widest text-charcoal font-semibold hover:bg-cream transition-colors self-end sm:self-auto"
-        >
-          <RefreshCw className="w-3.5 h-3.5 text-gold" /> Refresh Leads
-        </button>
+        <div className="flex items-center space-x-2 w-full sm:w-auto self-end sm:self-auto justify-end">
+          <button
+            onClick={exportToCSV}
+            disabled={enquiries.length === 0}
+            className="flex items-center gap-1.5 py-1.5 px-3 bg-charcoal text-white hover:bg-gold text-xs uppercase tracking-widest font-semibold transition-all disabled:opacity-50 cursor-pointer"
+          >
+            <Download className="w-3.5 h-3.5" /> Export CSV
+          </button>
+
+          <button
+            onClick={onRefresh}
+            className="flex items-center gap-1.5 py-1.5 px-3 bg-white border border-[#E2DDD5] text-xs uppercase tracking-widest text-charcoal font-semibold hover:bg-cream transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5 text-gold" /> Refresh Leads
+          </button>
+        </div>
       </div>
 
       {/* Leads Table */}

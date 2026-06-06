@@ -21,18 +21,42 @@ model Enquiry {
 }
 
 model Client {
-  id           String        @id @default(cuid())
-  name         String
-  phone        String
-  email        String?
-  address      String?
-  notes        String?
-  status       String        @default("lead") // lead | active | completed
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  enquiries    Enquiry[]
-  appointments Appointment[]
+  id               String          @id @default(cuid())
+  name             String
+  phone            String
+  email            String?
+  address          String?
+  notes            String?
+  status           String          @default("lead") // lead | active | completed
+  consultancyHours Int             @default(0)
+  completionRate   Int             @default(0) // 0-100 percentage
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  enquiries        Enquiry[]
+  appointments     Appointment[]
+  statusHistory    StatusHistory[]
+  todos            Todo[]
 }
+
+model StatusHistory {
+  id         String   @id @default(cuid())
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  oldStatus  String
+  newStatus  String
+  changedBy  String   @default("Admin")
+  createdAt  DateTime @default(now())
+}
+
+model Todo {
+  id        String   @id @default(cuid())
+  content   String
+  completed Boolean  @default(false)
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
 
 model Appointment {
   id         String   @id @default(cuid())
@@ -48,3 +72,12 @@ model Appointment {
   createdAt  DateTime @default(now())
   client     Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
 }
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+

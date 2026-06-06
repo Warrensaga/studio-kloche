@@ -9,12 +9,12 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const servicesList = [
-    "Interior Design",
-    "Renovation",
-    "Short Let Styling",
-    "Office Design",
+    "Residential Interior Design",
+    "Commercial Interior Design",
     "Space Planning",
-    "Furniture & Decor"
+    "Furniture & Decor Selection",
+    "Renovation Consultation",
+    "Custom Design Solutions"
   ];
 
   const {

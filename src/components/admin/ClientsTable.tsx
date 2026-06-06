@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Phone, Mail, Edit, Trash2, ArrowUpRight, FolderOpen, CalendarClock } from "lucide-react";
+import { User, Phone, Mail, Edit, Trash2, ArrowUpRight, FolderOpen, CalendarClock, Download } from "lucide-react";
 import { format } from "date-fns";
 
 interface ClientsTableProps {
@@ -8,6 +8,7 @@ interface ClientsTableProps {
   onDelete: (id: string) => Promise<void>;
   onViewProfile: (id: string) => void;
 }
+
 
 export default function ClientsTable({
   clients,
@@ -29,6 +30,30 @@ export default function ClientsTable({
     } finally {
       setIsDeleting(false);
     }
+  };
+
+  const exportToCSV = () => {
+    const headers = ["Client Name", "Phone", "Email", "Physical Address", "Project Status", "Consultancy Hours", "Completion Rate (%)", "Registered Date"];
+    const rows = clients.map(c => [
+      `"${c.name.replace(/"/g, '""')}"`,
+      `"${c.phone}"`,
+      `"${c.email || ''}"`,
+      `"${(c.address || '').replace(/"/g, '""')}"`,
+      `"${c.status.toUpperCase()}"`,
+      c.consultancyHours || 0,
+      `${c.completionRate || 0}%`,
+      `"${format(new Date(c.createdAt), "yyyy-MM-dd")}"`
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `Kloche_Studio_Clients_Report_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const getStatusBadge = (status: string) => {
@@ -56,7 +81,25 @@ export default function ClientsTable({
   };
 
   return (
-    <div className="font-sans relative">
+    <div className="font-sans relative space-y-4">
+      {/* CSV Export Controller and Info Summary */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white border border-[#E2DDD5] p-5 shadow-xs gap-3">
+        <div>
+          <span className="text-[9px] uppercase tracking-[0.25em] text-gold font-bold block mb-0.5">Administrative Records</span>
+          <p className="text-xs text-[#6B6560] font-light">
+            Total of <strong className="text-charcoal font-semibold">{clients.length}</strong> designers and clients registered.
+          </p>
+        </div>
+        <button
+          onClick={exportToCSV}
+          disabled={clients.length === 0}
+          className="flex items-center gap-2 py-2.5 px-5 bg-charcoal hover:bg-gold text-white text-[10px] uppercase tracking-widest font-semibold transition-all disabled:opacity-50 cursor-pointer border border-transparent duration-300"
+        >
+          <Download className="w-3.5 h-3.5" />
+          <span>Export CSV Report</span>
+        </button>
+      </div>
+
       {/* Table grid */}
       <div className="overflow-x-auto border border-[#E2DDD5] bg-[#FAF8F4] shadow-xs">
         <table className="w-full text-left border-collapse">

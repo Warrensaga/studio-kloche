@@ -1,14 +1,269 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+import bcrypt from "bcryptjs";
 import { prisma } from "./src/lib/prisma";
 import { sendEnquiryEmail } from "./src/lib/email";
 import { enquirySchema, clientSchema, appointmentSchema } from "./src/lib/validations";
+import { sanitizeData } from "./src/lib/sanitizer";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+// Global input sanitization middleware to recursively sanitize and trim all incoming body and query fields
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.body) {
+    req.body = sanitizeData(req.body);
+  }
+  if (req.query) {
+    req.query = sanitizeData(req.query);
+  }
+  next();
+});
+
+// In-Memory Rate Limiting for Authentication Endpoints
+interface RateLimitRecord {
+  count: number;
+  resetAt: number;
+}
+const authRateLimits = new Map<string, RateLimitRecord>();
+
+function createAuthRateLimiter(windowMs: number, maxRequests: number, message: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const ip = (req.ip || req.headers["x-forwarded-for"] || "unknown_ip") as string;
+    const now = Date.now();
+    const record = authRateLimits.get(ip);
+
+    if (!record) {
+      authRateLimits.set(ip, {
+        count: 1,
+        resetAt: now + windowMs,
+      });
+      next();
+      return;
+    }
+
+    if (now > record.resetAt) {
+      record.count = 1;
+      record.resetAt = now + windowMs;
+      next();
+      return;
+    }
+
+    record.count += 1;
+    if (record.count > maxRequests) {
+      const waitTimeSeconds = Math.ceil((record.resetAt - now) / 1000);
+      res.setHeader("Retry-After", waitTimeSeconds.toString());
+      res.status(429).json({
+        error: `${message} Try again in ${waitTimeSeconds} seconds.`
+      });
+      return;
+    }
+
+    next();
+  };
+}
+
+// Allow max 10 requests within a 1-minute window
+const authRateLimitMiddleware = createAuthRateLimiter(
+  60 * 1000, 
+  10, 
+  "Too many authentication requests from this IP address."
+);
+
+// API: AUTHENTICATION (SIGN IN & SIGN UP)
+
+// GET /api/auth/admins-count - check if any admin accounts exist
+app.get("/api/auth/admins-count", async (req: Request, res: Response) => {
+  try {
+    const count = await prisma.admin.count();
+    res.json({ count });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to count administrators" });
+  }
+});
+
+// POST /api/auth/signup - register a new admin account
+app.post("/api/auth/signup", authRateLimitMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      res.status(400).json({ error: "Username, email, and password are required" });
+      return;
+    }
+
+    if (username.length < 3 || password.length < 6) {
+      res.status(400).json({ error: "Username must be at least 3 characters and password must be at least 6 characters" });
+      return;
+    }
+
+    // Check if admin already exists by username or email
+    const existing = await prisma.admin.findFirst({
+      where: {
+        OR: [
+          { username: username.trim() },
+          { email: email.trim().toLowerCase() }
+        ]
+      }
+    });
+
+    if (existing) {
+      res.status(400).json({ error: "Username or email is already registered" });
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const admin = await prisma.admin.create({
+      data: {
+        username: username.trim(),
+        email: email.trim().toLowerCase(),
+        password: hashedPassword,
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      user: { id: admin.id, username: admin.username, email: admin.email }
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to register administrator" });
+  }
+});
+
+// POST /api/auth/signin - log in an existing admin account
+app.post("/api/auth/signin", authRateLimitMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { login, password } = req.body; // login can be either email or username
+
+    if (!login || !password) {
+      res.status(400).json({ error: "Email/Username and password are required" });
+      return;
+    }
+
+    const admin = await prisma.admin.findFirst({
+      where: {
+        OR: [
+          { username: login.trim() },
+          { email: login.trim().toLowerCase() }
+        ]
+      }
+    });
+
+    if (!admin) {
+      res.status(401).json({ error: "Invalid email, username, or password" });
+      return;
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      res.status(401).json({ error: "Invalid email, username, or password" });
+      return;
+    }
+
+    res.json({
+      success: true,
+      user: { id: admin.id, username: admin.username, email: admin.email }
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to authenticate administrator" });
+  }
+});
+
+// Temporary in-memory database of password reset authorizations
+interface ResetRecord {
+  code: string;
+  expiresAt: number;
+}
+const resetCodes = new Map<string, ResetRecord>();
+
+// POST /api/auth/forgot-password - Dispatch password reset authorization code
+app.post("/api/auth/forgot-password", authRateLimitMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      res.status(400).json({ error: "Email address is required to proceed" });
+      return;
+    }
+
+    const admin = await prisma.admin.findUnique({
+      where: { email: email.trim().toLowerCase() }
+    });
+
+    if (!admin) {
+      res.status(404).json({ error: "No administrative profile matching this email registration." });
+      return;
+    }
+
+    // Generate high-quality 6-digit random code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    resetCodes.set(admin.email, {
+      code,
+      expiresAt: Date.now() + 15 * 60 * 1000 // Valid for 15 minutes
+    });
+
+    console.log(`[SECURITY ENVELOPE - KLOCHE RESET PIN]: Target="${admin.email}" ResetCode="${code}"`);
+
+    res.json({
+      success: true,
+      message: "An authorization code has been dispatched. For secure local preview, your active reset code is provided below.",
+      code // Returned so developer can instantly copy/test without setting up an external mail daemon
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Credential reset dispatch failed" });
+  }
+});
+
+// POST /api/auth/reset-password - Redeem reset token and update database credentials
+app.post("/api/auth/reset-password", authRateLimitMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { email, code, newPassword } = req.body;
+    if (!email || !code || !newPassword) {
+      res.status(400).json({ error: "All attributes (email, code, password) are mandatory" });
+      return;
+    }
+
+    const targetEmail = email.trim().toLowerCase();
+    const activeCode = code.trim();
+    const entry = resetCodes.get(targetEmail);
+
+    if (!entry) {
+      res.status(400).json({ error: "No inactive request associated with this email profile." });
+      return;
+    }
+
+    if (entry.expiresAt < Date.now()) {
+      resetCodes.delete(targetEmail);
+      res.status(400).json({ error: "Password authorization code has expired. Request a new token." });
+      return;
+    }
+
+    if (entry.code !== activeCode) {
+      res.status(400).json({ error: "Invalid credit code. Please recheck your secure inbox/logs." });
+      return;
+    }
+
+    // Update password inside SQLite database safely
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.admin.update({
+      where: { email: targetEmail },
+      data: { password: hashedPassword }
+    });
+
+    // Revoke code to avoid replay attacks
+    resetCodes.delete(targetEmail);
+
+    res.json({
+      success: true,
+      message: "Administrator credentials successfully synchronized to the database."
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to update security credentials" });
+  }
+});
 
 // API: ENQUIRIES
 
@@ -145,8 +400,20 @@ app.post("/api/clients", async (req: Request, res: Response) => {
         address: data.address || null,
         notes: data.notes || null,
         status: data.status,
+        consultancyHours: data.consultancyHours || 0,
+        completionRate: data.completionRate || 0,
       },
     });
+
+    // Create initial tracking history
+    await prisma.statusHistory.create({
+      data: {
+        clientId: client.id,
+        oldStatus: "None",
+        newStatus: data.status,
+      }
+    });
+
     res.status(201).json(client);
   } catch (error: any) {
     if (error.name === "ZodError") {
@@ -170,6 +437,12 @@ app.get("/api/clients/:id", async (req: Request, res: Response) => {
         appointments: {
           orderBy: { date: "asc" },
         },
+        statusHistory: {
+          orderBy: { createdAt: "desc" },
+        },
+        todos: {
+          orderBy: { createdAt: "desc" },
+        },
       },
     });
 
@@ -189,6 +462,20 @@ app.patch("/api/clients/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const data = clientSchema.partial().parse(req.body);
+
+    const existingClient = await prisma.client.findUnique({
+      where: { id }
+    });
+
+    if (existingClient && data.status && existingClient.status !== data.status) {
+      await prisma.statusHistory.create({
+        data: {
+          clientId: id,
+          oldStatus: existingClient.status,
+          newStatus: data.status,
+        }
+      });
+    }
 
     const client = await prisma.client.update({
       where: { id },
@@ -212,6 +499,95 @@ app.delete("/api/clients/:id", async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message || "Failed to delete client" });
   }
 });
+
+
+// API: TRADING/PINNING INTERNAL CLIENT REMINDERS (TODOS)
+app.get("/api/todos", async (req: Request, res: Response) => {
+  try {
+    const todos = await prisma.todo.findMany({
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      },
+      orderBy: {
+        createdAt: "desc",
+      }
+    });
+    res.json(todos);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to fetch internal reminders" });
+  }
+});
+
+app.post("/api/todos", async (req: Request, res: Response) => {
+  try {
+    const { content, clientId } = req.body;
+    if (!content || content.trim() === "") {
+      res.status(400).json({ error: "Reminder content cannot be empty" });
+      return;
+    }
+    const todo = await prisma.todo.create({
+      data: {
+        content: content.trim(),
+        clientId: clientId || null,
+      },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      }
+    });
+    res.status(201).json(todo);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to create reminder" });
+  }
+});
+
+app.patch("/api/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { completed, content } = req.body;
+    const data: any = {};
+    if (completed !== undefined) data.completed = completed;
+    if (content !== undefined) data.content = content.trim();
+
+    const todo = await prisma.todo.update({
+      where: { id },
+      data,
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+          }
+        }
+      }
+    });
+    res.json(todo);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to update reminder" });
+  }
+});
+
+app.delete("/api/todos/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    await prisma.todo.delete({
+      where: { id },
+    });
+    res.json({ success: true, message: "Reminder successfully deleted" });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to delete reminder" });
+  }
+});
+
 
 
 // API: APPOINTMENTS
@@ -373,4 +749,9 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only run the server process directly if not in Vercel environment
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;

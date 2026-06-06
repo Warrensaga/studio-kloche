@@ -24,6 +24,8 @@ import ClientForm from "./components/admin/ClientForm";
 import AppointmentCalendar from "./components/admin/AppointmentCalendar";
 import AppointmentModal from "./components/admin/AppointmentModal";
 import EnquiriesTable from "./components/admin/EnquiriesTable";
+import { DashboardWidget } from "./components/admin/DashboardWidget";
+import { TodoSidebar } from "./components/admin/TodoSidebar";
 
 // Icons
 import {
@@ -123,6 +125,7 @@ function AdminDashboard() {
   const [recentEnqs, setRecentEnqs] = useState<any[]>([]);
   const [recentAppts, setRecentAppts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isTodoOpen, setIsTodoOpen] = useState(false);
   const navigate = useNavigate();
 
   const fetchDashboardData = async () => {
@@ -181,13 +184,21 @@ function AdminDashboard() {
             <h1 className="font-serif text-3xl font-light text-charcoal">Studio Overview Dashboard</h1>
             <p className="text-xs text-muted font-light mt-1">Real-time Kloche Interiors client relationship CRM metrics & schedule queues.</p>
           </div>
-          <button
-            onClick={fetchDashboardData}
-            className="p-2 border border-[#E2DDD5] hover:border-gold-light hover:text-gold text-charcoal bg-[#FAF8F4] transition-colors"
-            title="Refresh Core Data"
-          >
-            <RefreshCw className="w-4.5 h-4.5 text-[#6B6560]" />
-          </button>
+          <div className="flex items-center space-x-3.5">
+            <button
+              onClick={() => setIsTodoOpen(true)}
+              className="flex items-center space-x-2 py-2 px-4 border border-[#1C1C1A] text-charcoal hover:bg-[#1C1C1A] hover:text-[#FAF8F4] text-xs font-semibold uppercase tracking-widest transition-all duration-300 cursor-pointer"
+            >
+              <span>📋 Reminders & To-Dos</span>
+            </button>
+            <button
+              onClick={fetchDashboardData}
+              className="p-2 border border-[#E2DDD5] hover:border-gold-light hover:text-gold text-charcoal bg-[#FAF8F4] transition-colors cursor-pointer"
+              title="Refresh Core Data"
+            >
+              <RefreshCw className="w-4.5 h-4.5 text-[#6B6560]" />
+            </button>
+          </div>
         </div>
 
         {/* Dynamic metrics widgets */}
@@ -197,6 +208,9 @@ function AdminDashboard() {
           appointments={stats.appointments}
           activeProjects={stats.activeProject}
         />
+
+        {/* Recharts Graphical Visualizations */}
+        <DashboardWidget />
 
         {loading ? (
           <div className="py-20 flex justify-center items-center"><Loader className="w-8 h-8 animate-spin text-gold" /></div>
@@ -292,6 +306,9 @@ function AdminDashboard() {
           </div>
         )}
       </div>
+
+      {/* Slide-out collapsing Reminders panel Drawer */}
+      <TodoSidebar isOpen={isTodoOpen} onClose={() => setIsTodoOpen(false)} />
     </AdminLayout>
   );
 }
@@ -604,7 +621,82 @@ function AdminClientDetail() {
                 placeholder="Autosaves on focus blur. Maintain client space preferences, custom color samples, blueprint requirements or estimated budgets here."
                 className="w-full bg-[#FAF8F4] border border-[#E2DDD5] p-3 text-xs focus:ring-0 focus:outline-none focus:border-gold resize-none leading-relaxed text-[#1C1C1A]"
               />
-              <div className="text-[9px] text-[#6B6560] text-center italic mt-1 pb-2">✏️ Click outside of notes boxes to record input.</div>
+              <div className="text-[9px] text-[#6B6560] text-center italic mt-1 pb-4">✏️ Click outside of notes boxes to record input.</div>
+            </div>
+
+            {/* Project Metrics editing subcard */}
+            <div className="pt-6 space-y-4">
+              <h4 className="text-[10px] uppercase font-bold tracking-widest text-charcoal">Studio Operational Metrics</h4>
+              <div className="space-y-4 text-xs text-left">
+                <div className="space-y-1">
+                  <label className="text-[9px] uppercase font-semibold text-[#6B6560] block">Consultancy Hours Committed</label>
+                  <input
+                    type="number"
+                    value={client.consultancyHours || 0}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value) || 0;
+                      setClient({ ...client, consultancyHours: val });
+                    }}
+                    onBlur={async () => {
+                      try {
+                        await fetch(`/api/clients/${client.id}`, {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ consultancyHours: client.consultancyHours }),
+                        });
+                        toast.success("Consultancy hours synchronized");
+                      } catch (err) {
+                        console.error(err);
+                      }
+                    }}
+                    className="w-full bg-[#FAF8F4] border border-[#E2DDD5] px-3 py-2 text-xs focus:ring-0 focus:outline-none focus:border-gold text-[#1C1C1A]"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <label className="text-[9px] uppercase font-semibold text-[#6B6560]">Project Completion Rate</label>
+                    <span className="text-gold font-bold">{client.completionRate || 0}%</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={client.completionRate || 0}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value) || 0;
+                        setClient({ ...client, completionRate: val });
+                      }}
+                      onMouseUp={async () => {
+                        try {
+                          await fetch(`/api/clients/${client.id}`, {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ completionRate: client.completionRate }),
+                          });
+                          toast.success("Progress metrics updated");
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      onTouchEnd={async () => {
+                        try {
+                          await fetch(`/api/clients/${client.id}`, {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ completionRate: client.completionRate }),
+                          });
+                          toast.success("Progress metrics updated");
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }}
+                      className="w-full h-1.5 bg-[#E2DDD5] rounded-none appearance-none cursor-pointer accent-gold"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -684,6 +776,78 @@ function AdminClientDetail() {
                     )}
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            {/* Chronological Status History Timeline */}
+            <div className="bg-white border border-[#E2DDD5] shadow-xs p-6 text-left">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                  <h3 className="font-serif text-lg font-medium text-charcoal">Status Lifecycle History</h3>
+                  <p className="text-[10px] text-muted font-light mt-0.5">Chronological record of operational milestones and lifecycle modifications.</p>
+                </div>
+                
+                {/* Real-time status toggle selector */}
+                <div className="flex items-center space-x-2 bg-[#FAF8F4] px-3 py-1.5 border border-[#E2DDD5]">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-[#6B6560]">Current Status:</span>
+                  <select
+                    value={client.status || "lead"}
+                    onChange={async (e) => {
+                      const newStatus = e.target.value;
+                      try {
+                        const res = await fetch(`/api/clients/${client.id}`, {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ status: newStatus }),
+                        });
+                        if (res.ok) {
+                          toast.success(`Client migrated to ${newStatus.toUpperCase()}`, {
+                            icon: "✨",
+                            style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+                          });
+                          // Reload client detail info
+                          fetchClientDetails();
+                        } else {
+                          toast.error("Status migration rejected");
+                        }
+                      } catch (err) {
+                        console.error(err);
+                        toast.error("Failed to migrate status");
+                      }
+                    }}
+                    className="bg-transparent text-xs font-semibold focus:outline-none text-gold uppercase tracking-wider cursor-pointer"
+                  >
+                    <option value="lead">Lead</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Grid timeline lines */}
+              <div className="relative pl-6 space-y-6 before:absolute before:left-2 before:top-1.5 before:bottom-1.5 before:w-0.5 before:bg-[#E2DDD5]">
+                {!client.statusHistory || client.statusHistory.length === 0 ? (
+                  <div className="text-xs text-[#6B6560] font-light italic pl-2">No historical alterations registered. Stage initialized as: <span className="text-gold uppercase font-bold text-[10px] font-sans tracking-wide">{client.status || "lead"}</span>.</div>
+                ) : (
+                  [...client.statusHistory]
+                    .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((history: any, idx: number) => (
+                      <div key={history.id || idx} className="relative group">
+                        {/* Bullet circle indicator */}
+                        <div className="absolute -left-[23px] top-1 w-3 h-3 bg-white border-2 border-gold rounded-full group-hover:bg-gold transition-colors"></div>
+                        
+                        <div className="text-xs">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                            <span className="font-semibold text-charcoal">
+                              Status migration: <span className="text-rose-800 line-through font-light mr-1 uppercase text-[10px]">{history.oldStatus}</span> → <span className="text-emerald-800 font-bold bg-emerald-50 border border-emerald-150 px-2 py-0.5 font-sans text-[10px] ml-1 uppercase rounded-sm">{history.newStatus}</span>
+                            </span>
+                            <span className="text-[10px] text-muted font-mono">{format(new Date(history.createdAt), "LLL dd, yyyy 'at' hh:mm a")}</span>
+                          </div>
+                          <div className="text-[10px] text-[#6B6560] mt-1 font-light">Authorized by: <strong className="font-semibold text-charcoal">{history.changedBy || "Back Office Admin"}</strong></div>
+                        </div>
+                      </div>
+                    ))
+                )}
               </div>
             </div>
 
@@ -963,52 +1127,217 @@ function AdminEnquiries() {
 }
 
 
-// 3. ADMIN ACCESS CONTROL (PASSPHRASE/PIN GATE)
+// 3. ADMIN ACCESS CONTROL (SECURE DATABASE-BACKED SIGN IN & SIGN UP)
 function AdminGuard({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [passcode, setPasscode] = useState("");
-  const [attempts, setAttempts] = useState(0);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hasAdmins, setHasAdmins] = useState(true);
   const navigate = useNavigate();
 
+  // Forgot password & Remember me states
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [resetStep, setResetStep] = useState(1);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [resetCodeInput, setResetCodeInput] = useState("");
+  const [newPasswordInput, setNewPasswordInput] = useState("");
+  const [receivedResetCode, setReceivedResetCode] = useState("");
+
+  const checkAdmins = async () => {
+    try {
+      const res = await fetch("/api/auth/admins-count");
+      if (res.ok) {
+        const data = await res.json();
+        const countExists = data.count > 0;
+        setHasAdmins(countExists);
+        if (!countExists) {
+          setIsSignUp(true); // Default to registration so they can initialize
+        }
+      }
+    } catch (err) {
+      console.error("Failed to check admins counter:", err);
+    }
+  };
+
   useEffect(() => {
-    const authStatus = sessionStorage.getItem("kloche_admin_authenticated");
-    if (authStatus === "true") {
+    const authStatusSession = sessionStorage.getItem("kloche_admin_authenticated");
+    const authStatusLocal = localStorage.getItem("kloche_admin_authenticated");
+    if (authStatusSession === "true" || authStatusLocal === "true") {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
+      checkAdmins();
+    }
+
+    // Recover login username if they checked Remember Me
+    const rememberedLogin = localStorage.getItem("kloche_remember_me_login");
+    if (rememberedLogin) {
+      setLogin(rememberedLogin);
+      setRememberMe(true);
     }
   }, []);
 
-  const handleVerify = (e: React.FormEvent) => {
+  const handleForgotPasswordRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setReceivedResetCode(data.code || "");
+        setResetStep(2);
+        toast.success("Verification pin generated! Provided below for development ease.", {
+          icon: "✉️",
+          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+        });
+      } else {
+        toast.error(data.error || "Reset dispatch failed", {
+          style: { background: "#4A0E17", color: "#FAF8F4" }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Endpoint timeout");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: forgotEmail,
+          code: resetCodeInput,
+          newPassword: newPasswordInput
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success("Security coordinates synchronized! Try signing in.", {
+          icon: "🗝️",
+          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+        });
+        setShowForgot(false);
+        setResetStep(1);
+        setLogin(forgotEmail);
+        setPassword("");
+        setResetCodeInput("");
+        setNewPasswordInput("");
+      } else {
+        toast.error(data.error || "Submission rejected", {
+          style: { background: "#4A0E17", color: "#FAF8F4" }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Database connection failure");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      const cleanInput = passcode.trim();
-      // Allow two memorized secure passcodes
-      if (cleanInput === "kloche-admin" || cleanInput === "nairobi2026") {
-        sessionStorage.setItem("kloche_admin_authenticated", "true");
-        setIsAuthenticated(true);
-        toast.success("Welcome, Studio Administrator", {
-          icon: "🗝️",
-          style: {
-            background: "#1C1C1A",
-            color: "#FAF8F4",
-            border: "1px solid #B8965A"
-          }
+    try {
+      if (isSignUp) {
+        // Register new Admin
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, email, password }),
         });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          sessionStorage.setItem("kloche_admin_authenticated", "true");
+          sessionStorage.setItem("kloche_admin_user", JSON.stringify(data.user));
+          
+          if (rememberMe) {
+            localStorage.setItem("kloche_admin_authenticated", "true");
+            localStorage.setItem("kloche_admin_user", JSON.stringify(data.user));
+            localStorage.setItem("kloche_remember_me_login", username);
+          } else {
+            localStorage.removeItem("kloche_admin_authenticated");
+            localStorage.removeItem("kloche_admin_user");
+            localStorage.removeItem("kloche_remember_me_login");
+          }
+
+          setIsAuthenticated(true);
+          toast.success(`Welcome, Admin ${data.user.username}! Account created.`, {
+            icon: "🔑",
+            style: {
+              background: "#1C1C1A",
+              color: "#FAF8F4",
+              border: "1px solid #B8965A"
+            }
+          });
+        } else {
+          toast.error(data.error || "Failed to register new administrator account.", {
+            style: { background: "#4A0E17", color: "#FAF8F4" }
+          });
+        }
       } else {
-        setAttempts(prev => prev + 1);
-        toast.error(attempts >= 2 ? "Access Denied. Passcode is incorrect." : "Invalid back-office passcode. Re-try.", {
-          style: {
-            background: "#4A0E17",
-            color: "#FAF8F4"
-          }
+        // Sign In
+        const res = await fetch("/api/auth/signin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ login, password }),
         });
+
+        const data = await res.json();
+        if (res.ok && data.success) {
+          sessionStorage.setItem("kloche_admin_authenticated", "true");
+          sessionStorage.setItem("kloche_admin_user", JSON.stringify(data.user));
+          
+          if (rememberMe) {
+            localStorage.setItem("kloche_admin_authenticated", "true");
+            localStorage.setItem("kloche_admin_user", JSON.stringify(data.user));
+            localStorage.setItem("kloche_remember_me_login", login);
+          } else {
+            localStorage.removeItem("kloche_admin_authenticated");
+            localStorage.removeItem("kloche_admin_user");
+            localStorage.removeItem("kloche_remember_me_login");
+          }
+
+          setIsAuthenticated(true);
+          toast.success(`Welcome back, ${data.user.username}`, {
+            icon: "🗝️",
+            style: {
+              background: "#1C1C1A",
+              color: "#FAF8F4",
+              border: "1px solid #B8965A"
+            }
+          });
+        } else {
+          toast.error(data.error || "Invalid credentials. Please try again.", {
+            style: { background: "#4A0E17", color: "#FAF8F4" }
+          });
+        }
       }
+    } catch (err) {
+      console.error(err);
+      toast.error("Database connection failure. Please make sure the backend is fully rebooted.", {
+        style: { background: "#4A0E17", color: "#FAF8F4" }
+      });
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   if (isAuthenticated === null) {
@@ -1045,62 +1374,296 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Auth Box Center */}
-        <div className="flex-1 flex flex-col justify-center items-center px-6 py-12 z-10">
-          <div className="w-full max-w-md bg-[#F5F0E8] border border-[#1C1C1A]/10 p-10 md:p-12 space-y-8 shadow-xs">
-            {/* Header Title */}
-            <div className="space-y-3 text-center">
-              <span className="text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-medium block">
-                Security Lock
-              </span>
-              <h2 className="text-3xl font-serif tracking-tight text-[#1C1C1A]">
-                Studio <span className="italic font-light">Workspace</span>
-              </h2>
-              <p className="text-xs text-[#6B6560] font-light max-w-xs mx-auto leading-relaxed">
-                Enter your authorized studio passcode to grant operational credentials for client records, enquiries and calendar.
-              </p>
-            </div>
+        <div className="flex-1 flex flex-col justify-center items-center px-6 py-8 z-10">
+          {showForgot ? (
+            <div className="w-full max-w-md bg-[#F5F0E8] border border-[#1C1C1A]/10 p-10 md:p-12 space-y-8 shadow-xs">
+              {/* Header Title */}
+              <div className="space-y-3 text-center">
+                <span className="text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-medium block">
+                  Security Authorization
+                </span>
+                <h2 className="text-3xl font-serif tracking-tight text-[#1C1C1A]">
+                  Reset <span className="italic font-light">Credential</span>
+                </h2>
+                <p className="text-xs text-[#6B6560] font-light max-w-xs mx-auto leading-relaxed">
+                  {resetStep === 1 
+                    ? "Enter your master administrator email address to request a secure 6-digit verification code."
+                    : "Passphrase synchronization phase. Enter your dispatched validation pin and key in your new back-office password."
+                  }
+                </p>
+              </div>
 
-            {/* Entry Form */}
-            <form onSubmit={handleVerify} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
-                  Passcode
-                </label>
-                <div className="relative">
+              {resetStep === 1 ? (
+                <form onSubmit={handleForgotPasswordRequest} className="space-y-5">
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                      Master Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. administrator@kloche.com"
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-[#1C1C1A] hover:bg-black text-[#FAF8F4] py-3 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 flex items-center justify-center space-x-2 active:scale-98 cursor-pointer"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                        <span>Requesting Token...</span>
+                      </>
+                    ) : (
+                      <span>Dispatch Reset Code</span>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                <form onSubmit={handleResetPasswordSubmit} className="space-y-5">
+                  {receivedResetCode && (
+                    <div className="bg-[#B8965A]/10 border border-[#B8965A]/30 p-3.5 text-left text-xs text-[#8C6D37] leading-relaxed">
+                      <p className="font-semibold uppercase tracking-wider text-[9px] mb-1">Authorization Code Dispatched</p>
+                      Reset Code: <strong className="text-charcoal font-bold tracking-widest text-sm bg-white border px-2 py-0.5 border-[#B8965A]/20 ml-1 font-mono">{receivedResetCode}</strong>
+                    </div>
+                  )}
+
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                      Verification Code (6-Digits)
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      maxLength={6}
+                      placeholder="e.g. 123456"
+                      value={resetCodeInput}
+                      onChange={(e) => setResetCodeInput(e.target.value)}
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A] font-mono tracking-widest text-center"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                      New Passphrase
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      placeholder="Min 6 characters"
+                      value={newPasswordInput}
+                      onChange={(e) => setNewPasswordInput(e.target.value)}
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-[#1C1C1A] hover:bg-black text-[#FAF8F4] py-3 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 flex items-center justify-center space-x-2 active:scale-98 cursor-pointer"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                        <span>Upgrading Passphrase...</span>
+                      </>
+                    ) : (
+                      <span>Synchronize Credentials</span>
+                    )}
+                  </button>
+                </form>
+              )}
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForgot(false);
+                    setResetStep(1);
+                    setReceivedResetCode("");
+                  }}
+                  className="font-sans text-xs text-gold hover:text-charcoal transition-colors tracking-wide font-medium underline underline-offset-4 cursor-pointer"
+                >
+                  Return to Workspace Log In
+                </button>
+              </div>
+
+              <div className="border-t border-[#1C1C1A]/10 pt-6 text-center">
+                <span className="text-[9px] uppercase tracking-[0.2em] text-[#6B6560] block font-light">
+                  Property of Studio Kloche & Co.
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="w-full max-w-md bg-[#F5F0E8] border border-[#1C1C1A]/10 p-10 md:p-12 space-y-8 shadow-xs">
+              
+              {/* Header Title */}
+              <div className="space-y-3 text-center">
+                <span className="text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-medium block">
+                  {isSignUp ? "Account Registration" : "Security Lock"}
+                </span>
+                <h2 className="text-3xl font-serif tracking-tight text-[#1C1C1A]">
+                  Studio <span className="italic font-light">{isSignUp ? "Sign Up" : "Workspace"}</span>
+                </h2>
+                
+                {!hasAdmins && isSignUp && (
+                  <div className="bg-[#B8965A]/10 border border-[#B8965A]/30 p-3.5 text-left text-xs text-[#8C6D37] leading-relaxed mb-4">
+                    <p className="font-semibold uppercase tracking-wider text-[9px] mb-1">Initialization Mode</p>
+                    No administrators detected in database schema. Please register the first master administrator account below.
+                  </div>
+                )}
+
+                <p className="text-xs text-[#6B6560] font-light max-w-xs mx-auto leading-relaxed">
+                  {isSignUp 
+                    ? "Create your secure administrator login to gain full operational control over spatial enquiries, client CRM folders and appointment calendar."
+                    : "Enter your back-office credentials to manage project walkthrough details, client relationship CRM portfolios & scheduling slots."
+                  }
+                </p>
+              </div>
+
+              {/* Entry Form */}
+              <form onSubmit={handleAuthSubmit} className="space-y-5">
+                {isSignUp ? (
+                  <>
+                    {/* Signup Username */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. nairobi_designer"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      />
+                    </div>
+
+                    {/* Signup Email */}
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="designer@kloche.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  /* Signin Account details */
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                      Username or Email
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter email or username"
+                      value={login}
+                      onChange={(e) => setLogin(e.target.value)}
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      autoFocus
+                    />
+                  </div>
+                )}
+
+                {/* Password field - Shared across flows */}
+                <div className="space-y-1.5 text-left text-[#1C1C1A]">
+                  <label className="text-[10px] uppercase tracking-widest text-[#1C1C1A] font-bold block">
+                    Password
+                  </label>
                   <input
                     type="password"
                     required
-                    value={passcode}
-                    onChange={(e) => setPasscode(e.target.value)}
-                    placeholder="••••••••••••"
-                    className="w-full bg-white border border-[#E2DDD5] px-4 py-3 text-center tracking-widest text-lg font-mono focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A] placeholder:text-gray-300"
-                    autoFocus
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
                   />
                 </div>
+
+                {/* Remember Me and Forgot Password Action Bar */}
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <label className="flex items-center space-x-2 text-[#6B6560] cursor-pointer selection:bg-transparent">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="rounded-none border-[#E2DDD5] text-gold focus:ring-0 focus:ring-offset-0 focus:outline-none accent-gold h-4 w-4 bg-white"
+                    />
+                    <span className="font-light">Remember Me</span>
+                  </label>
+                  
+                  {!isSignUp && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowForgot(true);
+                        setForgotEmail("");
+                      }}
+                      className="text-gold hover:text-charcoal transition-colors underline underline-offset-4 font-normal"
+                    >
+                      Forgot Password?
+                    </button>
+                  )}
+                </div>
+
+                {/* Action Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-[#1C1C1A] hover:bg-black text-[#FAF8F4] py-3 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 flex items-center justify-center space-x-2 active:scale-98 cursor-pointer mt-6"
+                >
+                  {loading ? (
+                    <>
+                      <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <span>{isSignUp ? "Register Admin Account" : "Access Studio Workspace"}</span>
+                  )}
+                </button>
+              </form>
+
+              {/* Alternating Signin/Signup Toggle option */}
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSignUp(!isSignUp);
+                    // Clear error state and raw inputs for neat switching
+                    setUsername("");
+                    setEmail("");
+                    setPassword("");
+                    setLogin("");
+                  }}
+                  className="font-sans text-xs text-gold hover:text-charcoal transition-colors tracking-wide font-medium underline underline-offset-4 cursor-pointer"
+                >
+                  {isSignUp 
+                    ? "Already have an admin account? Sign In" 
+                    : "New administrator in the studio? Sign Up"
+                  }
+                </button>
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-[#1C1C1A] hover:bg-black text-[#FAF8F4] py-3.5 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 flex items-center justify-center space-x-2 active:scale-98 cursor-pointer"
-              >
-                {loading ? (
-                  <>
-                    <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
-                    <span>Verifying Access...</span>
-                  </>
-                ) : (
-                  <span>Verify Credentials</span>
-                )}
-              </button>
-            </form>
-
-            <div className="border-t border-[#1C1C1A]/10 pt-6 text-center">
-              <span className="text-[9px] uppercase tracking-[0.2em] text-[#6B6560] block font-light">
-                Property of Studio Kloche & Co.
-              </span>
+              <div className="border-t border-[#1C1C1A]/10 pt-6 text-center">
+                <span className="text-[9px] uppercase tracking-[0.2em] text-[#6B6560] block font-light">
+                  Property of Studio Kloche & Co.
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Footer Area */}

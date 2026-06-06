@@ -71,14 +71,26 @@ export default function Sidebar() {
       </div>
 
       {/* Footer Return anchor */}
-      <div className="p-6 border-t border-gold/10">
+      <div className="p-6 border-t border-gold/10 space-y-3">
         <Link
           to="/"
-          className="flex items-center space-x-2.5 py-2.5 px-3 border border-[#E2DDD5]/20 hover:border-gold hover:text-gold text-xs uppercase tracking-widest font-medium transition-colors"
+          className="flex items-center justify-center space-x-2.5 py-2.5 px-3 border border-[#E2DDD5]/20 hover:border-gold hover:text-gold text-[10px] uppercase tracking-widest font-medium transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Exit to Website</span>
         </Link>
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("kloche_admin_authenticated");
+            sessionStorage.removeItem("kloche_admin_user");
+            localStorage.removeItem("kloche_admin_authenticated");
+            localStorage.removeItem("kloche_admin_user");
+            window.location.href = "/admin";
+          }}
+          className="w-full flex items-center justify-center space-x-2.5 py-2.5 px-3 border border-red-500/15 text-red-400/80 hover:text-red-400 hover:bg-red-500/15 text-[10px] uppercase tracking-widest font-medium transition-all cursor-pointer"
+        >
+          <span>Sign Out Account</span>
+        </button>
       </div>
     </aside>
   );

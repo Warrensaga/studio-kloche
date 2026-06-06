@@ -15,6 +15,8 @@ export const clientSchema = z.object({
   address: z.string().or(z.literal("")).or(z.null()).optional(),
   notes: z.string().or(z.literal("")).or(z.null()).optional(),
   status: z.enum(["lead", "active", "completed"]).default("lead"),
+  consultancyHours: z.coerce.number().int().nonnegative().optional(),
+  completionRate: z.coerce.number().int().min(0).max(100).optional(),
 });
 
 export const appointmentSchema = z.object({

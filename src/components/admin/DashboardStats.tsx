@@ -1,4 +1,5 @@
 import { Users, MessageSquare, Calendar, Briefcase, TrendingUp } from "lucide-react";
+import { motion } from "motion/react";
 
 interface StatsProps {
   totalClients: number;
@@ -50,9 +51,15 @@ export default function DashboardStats({
         const IconComponent = card.icon;
         
         return (
-          <div
+          <motion.div
             key={card.title}
-            className={`bg-[#FAF8F4] border border-[#E2DDD5] p-6 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${card.color}`}
+            whileHover={{ 
+              scale: 1.03, 
+              boxShadow: "0 12px 24px -10px rgba(184, 150, 90, 0.15), 0 4px 12px -5px rgba(184, 150, 90, 0.15)",
+              borderColor: "#B8965A"
+            }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className={`bg-[#FAF8F4] border border-[#E2DDD5] p-6 shadow-sm relative overflow-hidden flex flex-col justify-between cursor-pointer ${card.color}`}
           >
             {/* Top Row: Label & Icon */}
             <div className="flex items-start justify-between">
@@ -74,9 +81,10 @@ export default function DashboardStats({
                 <TrendingUp className="w-3 h-3 mr-1" /> Live
               </span>
             </div>
-          </div>
+          </motion.div>
         );
       })}
     </div>
   );
 }
+
