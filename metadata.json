@@ -1,0 +1,6 @@
+{
+  "name": "Kloche Interiors",
+  "description": "Nairobi's premier interior design and renovation studio transforming spaces into stylish, functional environments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

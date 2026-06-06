@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #F5F0E8;
+  --color-warm-white: #FAF8F4;
+  --color-charcoal: #1C1C1A;
+  --color-gold: #B8965A;
+  --color-gold-light: #D4AF78;
+  --color-muted: #6B6560;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", sans-serif;
+
+  --animate-pulse-gold: pulseGold 2s infinite;
+  --animate-fade-up: fadeUp 0.8s ease forwards;
+}
+
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 4px 20px rgba(184, 150, 90, 0.2); }
+  50% { box-shadow: 0 4px 32px rgba(184, 150, 90, 0.6); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Global body modifications for typography defaults */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-warm-white);
+  color: var(--color-charcoal);
+  overflow-x: hidden;
+}
+
+/* Luxury cursor elements */
+.custom-cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-gold);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s;
+}
+
+.custom-cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-gold-light);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.08s ease-out, width 0.2s, height 0.2s;
+}
+
+/* Custom scrollbar matching the theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-warm-white);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-light);
+}
+
+/* FullCalendar styling overrides to fit modern luxurious theme */
+.fc {
+  --fc-border-color: #E2DDD5;
+  --fc-button-bg-color: #1C1C1A;
+  --fc-button-border-color: #1C1C1A;
+  --fc-button-hover-bg-color: #B8965A;
+  --fc-button-hover-border-color: #B8965A;
+  --fc-button-active-bg-color: #B8965A;
+  --fc-button-active-border-color: #B8965A;
+  --fc-today-bg-color: #FDFCF9;
+  font-family: var(--font-sans);
+}
+
+.fc .fc-toolbar-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem !important;
+  font-weight: 500;
+  color: #1C1C1A;
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: #1C1C1A;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
+.fc .fc-daygrid-day-number {
+  color: #6B6560;
+  padding: 8px !important;
+}
+
+.fc .fc-event {
+  border: none !important;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border: 1px solid #E2DDD5 !important;
+  border-radius: 8px;
+  overflow: hidden;
+}

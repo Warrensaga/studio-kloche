@@ -1,0 +1,50 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Enquiry {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  service   String
+  message   String
+  status    String   @default("new") // new | read | replied
+  createdAt DateTime @default(now())
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientId  String?
+}
+
+model Client {
+  id           String        @id @default(cuid())
+  name         String
+  phone        String
+  email        String?
+  address      String?
+  notes        String?
+  status       String        @default("lead") // lead | active | completed
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  enquiries    Enquiry[]
+  appointments Appointment[]
+}
+
+model Appointment {
+  id         String   @id @default(cuid())
+  title      String
+  clientId   String?
+  clientName String
+  phone      String
+  service    String
+  date       DateTime
+  duration   Int      @default(60) // minutes
+  status     String   @default("confirmed") // confirmed | cancelled | completed
+  notes      String?
+  createdAt  DateTime @default(now())
+  client     Client?  @relation(fields: [clientId], references: [id], onDelete: SetNull)
+}
