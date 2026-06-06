@@ -5,12 +5,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: "Interior Design", href: "#services" },
-    { name: "Full Renovation", href: "#services" },
-    { name: "Short Let Styling", href: "#services" },
-    { name: "Office Design", href: "#services" },
+    { name: "Residential Interior Design", href: "#services" },
+    { name: "Commercial Interior Design", href: "#services" },
     { name: "Space Planning", href: "#services" },
-    { name: "Furniture & Decor", href: "#services" },
+    { name: "Furniture & Decor Selection", href: "#services" },
+    { name: "Renovation Consultation", href: "#services" },
+    { name: "Custom Design Solutions", href: "#services" },
   ];
 
   const quickLinks = [

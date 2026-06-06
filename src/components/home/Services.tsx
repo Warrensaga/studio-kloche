@@ -5,39 +5,39 @@ export default function Services() {
   const servicesData = [
     {
       num: "01",
-      title: "Interior Design",
-      desc: "Full concept-to-completion service. We design bespoke spaces with curated materials, color consultation, lighting details, and custom spatial concepts.",
+      title: "Residential Interior Design",
+      desc: "Complete layout design and materials curation for upscale private residences. We orchestrate architectural elements, custom joinery, lighting plan layouts, and bespoke surface selections from the ground up.",
       icon: Paintbrush,
     },
     {
       num: "02",
-      title: "Renovation",
-      desc: "Comprehensive remodeling and property restructuring. We coordinate trusted contractors and material sourcing to transform older environments completely.",
-      icon: Hammer,
-    },
-    {
-      num: "03",
-      title: "Short Let Styling",
-      desc: "Property styling tailored to optimize occupancy rates and bookings. We dress Airbnb, boutique hotels, and rental spaces for immediate aesthetic impact.",
-      icon: Home,
-    },
-    {
-      num: "04",
-      title: "Office Design",
-      desc: "Brand-aligned corporate, commercial and hospitality workstations. We engineer practical configurations that inspire teams and communicate excellence.",
+      title: "Commercial Interior Design",
+      desc: "Bespoke identity-driven layouts for boutique commercial suites, retail spaces, and creative workspaces. We optimize practical workflow configurations without compromising sophisticated aesthetic presence.",
       icon: Briefcase,
     },
     {
-      num: "05",
+      num: "03",
       title: "Space Planning",
-      desc: "Structural optimization of layout and walkthrough flow. We analyze lines of sight and footprints to unlock the latent potential of every square foot.",
+      desc: "Comprehensive study of volume, footprint usage, and walking coordinates. We refine spatial circulation patterns, analyze sightlines, and establish correct scale relationships.",
       icon: LayoutGrid,
     },
     {
-      num: "06",
-      title: "Furniture & Decor",
-      desc: "Curated furniture sourcing, custom textile design, and bespoke decoration styling. We select and pair unique artisan items to enrich your backdrop.",
+      num: "04",
+      title: "Furniture & Decor Selection",
+      desc: "Curated sourcing of physical artisan furniture, customized upholstery textiles, luxury floor coverings, and styling ornaments. We arrange items to form cohesive dimensional depth.",
       icon: Sofa,
+    },
+    {
+      num: "05",
+      title: "Renovation Consultation",
+      desc: "Detailed forensic assessment of older building volumes. We deliver full physical structural restructuring, wall removal guidance, material replacement logs, and progress coordination.",
+      icon: Hammer,
+    },
+    {
+      num: "06",
+      title: "Custom Design Solutions",
+      desc: "Tailored architectural solutions including custom fireplace mantels, wood slatted panels, recessed indirect display niches, and bespoke cabinetry crafted to your specific life requirements.",
+      icon: Home,
     },
   ];
 
