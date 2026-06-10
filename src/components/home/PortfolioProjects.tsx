@@ -13,6 +13,11 @@ import {
   Maximize2 
 } from "lucide-react";
 
+import renovationModernStudio from "../../assets/images/renovation_modern_studio_1780735451321.png";
+import renovationMinimalistLoft from "../../assets/images/renovation_minimalist_loft_1780735468055.png";
+import renovationCreativeLounge from "../../assets/images/renovation_creative_lounge_1780735485473.png";
+import renovationLuxuryAtelier from "../../assets/images/renovation_luxury_atelier_1780735503101.png";
+
 interface ProjectZone {
   name: string;
   description: string;
@@ -40,7 +45,7 @@ export default function PortfolioProjects() {
       id: 1,
       title: "The Karuna Creative Studio",
       subtitle: "Modernist Workspace Transformation",
-      image: "/src/assets/images/renovation_modern_studio_1780735451321.png",
+      image: renovationModernStudio,
       overview: "Renovation of an old warehouse into a bright, sleek, and highly functional workspace for a boutique design agency. Focused on improving natural airflow, spatial circulation, and incorporating custom oak carpentry.",
       duration: "10 Weeks",
       location: "Karuna Road, Nairobi",
@@ -68,7 +73,7 @@ export default function PortfolioProjects() {
       id: 2,
       title: "The Attic Loft Sanctuary",
       subtitle: "Cozy Editorial Workspace & Library",
-      image: "/src/assets/images/renovation_minimalist_loft_1780735468055.png",
+      image: renovationMinimalistLoft,
       overview: "A dramatic attic conversion for a creative director. We preserved the heritage timber beams while introducing modern floating library shelving, lush linen upholstery, and a warm tone-on-tone color palette.",
       duration: "14 Weeks",
       location: "Lavington, Nairobi",
@@ -96,7 +101,7 @@ export default function PortfolioProjects() {
       id: 3,
       title: "The Atelier Focus Lounge",
       subtitle: "Tactile Creative & Ideation Hub",
-      image: "/src/assets/images/renovation_creative_lounge_1780735485473.png",
+      image: renovationCreativeLounge,
       overview: "Renovation of a dark interior room into a vibrant hub of physical moodboards, warm meeting lounges, and materials exploration libraries. We focused strongly on tactile textures, brass finishes, and cozy boucle materials.",
       duration: "8 Weeks",
       location: "Gigiri, Nairobi",
@@ -124,7 +129,7 @@ export default function PortfolioProjects() {
       id: 4,
       title: "The Executive Consultation Suite",
       subtitle: "Bespoke Professional Showroom",
-      image: "/src/assets/images/renovation_luxury_atelier_1780735503101.png",
+      image: renovationLuxuryAtelier,
       overview: "An upscale luxury consultation lounge and private executive suite featuring heavy fluted walnut paneling, massive brass-lined arches, pristine herringbone flooring, and custom architectural glass partitions.",
       duration: "16 Weeks",
       location: "Westlands, Nairobi",
@@ -151,9 +156,9 @@ export default function PortfolioProjects() {
   ];
 
   return (
-    <section id="portfolio-projects" className="py-24 bg-[#FAF8F4] relative border-t border-[#E2DDD5]/60 overflow-hidden">
+    <section id="portfolio-projects" className="py-24 bg-[#F5F0E8] relative border-t border-kloche-gold/20 overflow-hidden">
       {/* Decorative subtle background accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-kloche-green/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-cream/30 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
@@ -161,13 +166,13 @@ export default function PortfolioProjects() {
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 justify-center md:justify-start mb-3">
-              <Sparkles className="w-4 h-4 text-gold" />
-              <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold font-semibold">
+              <Sparkles className="w-4 h-4 text-kloche-gold animate-pulse" />
+              <span className="font-sans text-xs tracking-[0.3em] uppercase text-kloche-green font-bold">
                 Studio Renovations
               </span>
             </div>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight">
-              Portfolio <span className="font-serif italic text-gold font-normal">Projects</span>
+              Portfolio <span className="font-serif italic text-kloche-green font-normal">Projects</span>
             </h2>
           </div>
           <p className="font-sans font-light text-sm text-muted max-w-md leading-relaxed">
@@ -181,7 +186,7 @@ export default function PortfolioProjects() {
             <motion.div
               key={project.id}
               onClick={() => setSelectedProject(project)}
-              className="bg-white border border-[#E2DDD5] group cursor-pointer overflow-hidden transition-all duration-300 hover:border-gold hover:shadow-lg flex flex-col h-full"
+              className="bg-white border border-[#E2DDD5] group cursor-pointer overflow-hidden transition-all duration-300 hover:border-kloche-gold hover:shadow-lg flex flex-col h-full rounded-xs shadow-xs"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -198,12 +203,12 @@ export default function PortfolioProjects() {
                 
                 {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="px-5 py-3 bg-[#FAF8F4] text-charcoal text-[11px] font-sans uppercase font-medium tracking-[0.2em] shadow-lg flex items-center gap-1.5 transition-transform duration-300 translate-y-4 group-hover:translate-y-0">
-                    Explore Renovations <Maximize2 className="w-3.5 h-3.5 text-gold" />
+                  <div className="px-5 py-3 bg-[#F5F0E8] text-charcoal text-[11px] font-sans uppercase font-medium tracking-[0.2em] shadow-lg flex items-center gap-1.5 transition-transform duration-300 translate-y-4 group-hover:translate-y-0 text-[#1F1C1B]">
+                    Explore Renovations <Maximize2 className="w-3.5 h-3.5 text-kloche-gold" />
                   </div>
                 </div>
 
-                <div className="absolute top-4 left-4 bg-charcoal text-warm-white text-[9px] font-sans tracking-widest uppercase px-3 py-1.5 font-medium border border-gold/20">
+                <div className="absolute top-4 left-4 bg-[#1F1C1B]/95 text-warm-white text-[9px] font-sans tracking-widest uppercase px-3 py-1.5 font-medium border border-kloche-gold/20">
                   {project.concept}
                 </div>
               </div>
@@ -211,14 +216,14 @@ export default function PortfolioProjects() {
               {/* Card Footer Info */}
               <div className="p-6 md:p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-2 mb-2 text-gold/80">
+                  <div className="flex items-center gap-2 mb-2 text-kloche-green/80">
                     <MapPin className="w-3.5 h-3.5" />
-                    <span className="font-sans text-[10px] tracking-widest uppercase font-semibold">
+                    <span className="font-sans text-[10px] tracking-widest uppercase font-bold">
                       {project.location}
                     </span>
                   </div>
                   
-                  <h3 className="font-serif text-2xl font-light text-charcoal group-hover:text-gold transition-colors duration-300 mb-2">
+                  <h3 className="font-serif text-2xl font-light text-charcoal group-hover:text-kloche-green transition-colors duration-300 mb-2">
                     {project.title}
                   </h3>
                   
@@ -229,14 +234,14 @@ export default function PortfolioProjects() {
 
                 <div className="pt-4 border-t border-[#E2DDD5]/60 flex items-center justify-between text-muted text-[10px] font-sans tracking-widest uppercase">
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-gold" />
+                    <Clock className="w-3.5 h-3.5 text-kloche-gold" />
                     <span>{project.duration}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-gold" />
+                    <Layers className="w-3.5 h-3.5 text-kloche-gold" />
                     <span>{project.size}</span>
                   </div>
-                  <div className="text-gold font-semibold flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+                  <div className="text-kloche-green font-semibold flex items-center gap-0.5 group-hover:translate-x-1 transition-transform group-hover:text-kloche-gold">
                     View Details <ArrowUpRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
@@ -265,19 +270,19 @@ export default function PortfolioProjects() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-4xl bg-[#FAF8F4] border border-[#E2DDD5] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[85vh] max-h-[800px] z-10"
+              className="relative w-full max-w-4xl bg-[#F5F0E8] border border-[#E2DDD5] shadow-2xl overflow-hidden flex flex-col md:flex-row h-[85vh] max-h-[800px] z-10"
             >
               {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 z-20 p-2 bg-charcoal text-warm-white hover:bg-gold transition-colors duration-300 rounded-none border border-gold/15 focus:outline-none"
+                className="absolute top-4 right-4 z-20 p-2 bg-charcoal text-warm-white hover:bg-kloche-gold hover:text-[#1F1C1B] transition-colors duration-300 rounded-none border border-kloche-gold/15 focus:outline-none"
                 aria-label="Close detailed view"
               >
                 <X className="w-5 h-5" />
               </button>
 
               {/* Column 1: Image & Metrics (Fixed on Left in Large Screens) */}
-              <div className="w-full md:w-[45%] relative bg-charcoal flex flex-col min-h-[250px] md:min-h-0">
+              <div className="w-full md:w-[45%] relative bg-[#1F1C1B] flex flex-col min-h-[250px] md:min-h-0">
                 <div className="flex-1 relative">
                   <img
                     src={selectedProject.image}
@@ -289,34 +294,34 @@ export default function PortfolioProjects() {
                 </div>
                 
                 {/* Fast Specs Column */}
-                <div className="bg-[#1C1C1A] border-t border-gold/15 p-6 md:p-8 space-y-4">
+                <div className="bg-[#1C1C1A] border-t border-kloche-green/15 p-6 md:p-8 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <span className="text-[9px] font-sans tracking-widest text-[#FAF8F4]/40 uppercase block mb-1">Duration</span>
-                      <div className="flex items-center gap-1.5 text-gold text-xs uppercase font-medium">
+                      <div className="flex items-center gap-1.5 text-kloche-gold text-xs uppercase font-medium">
                         <Clock className="w-4 h-4" />
                         {selectedProject.duration}
                       </div>
                     </div>
                     <div>
                       <span className="text-[9px] font-sans tracking-widest text-[#FAF8F4]/40 uppercase block mb-1">Footprint</span>
-                      <div className="flex items-center gap-1.5 text-gold text-xs uppercase font-medium">
+                      <div className="flex items-center gap-1.5 text-kloche-gold text-xs uppercase font-medium">
                         <Layers className="w-4 h-4" />
                         {selectedProject.size}
                       </div>
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gold/10">
+                  <div className="pt-4 border-t border-kloche-green/10">
                     <span className="text-[9px] font-sans tracking-widest text-[#FAF8F4]/40 uppercase block mb-1">Design Style Concept</span>
                     <div className="flex items-center gap-1.5 text-warm-white text-xs uppercase font-semibold">
-                      <Compass className="w-4 h-4 text-gold" />
+                      <Compass className="w-4 h-4 text-kloche-gold" />
                       {selectedProject.concept}
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gold/10 flex items-center gap-2 text-[#FAF8F4]/60 text-xs font-light">
-                    <MapPin className="w-4 h-4 text-gold shrink-0" />
+                  <div className="pt-4 border-t border-kloche-green/10 flex items-center gap-2 text-[#FAF8F4]/60 text-xs font-light">
+                    <MapPin className="w-4 h-4 text-kloche-gold shrink-0 animate-bounce" />
                     <span>{selectedProject.location}</span>
                   </div>
                 </div>
@@ -325,7 +330,7 @@ export default function PortfolioProjects() {
               {/* Column 2: Detailed Text & Accordions (Scrollable) */}
               <div className="flex-1 p-6 md:p-10 overflow-y-auto flex flex-col justify-between">
                 <div>
-                  <span className="text-gold font-semibold text-[10px] tracking-[0.25em] font-sans uppercase block mb-1.5">
+                  <span className="text-kloche-green font-bold text-[10px] tracking-[0.25em] font-sans uppercase block mb-1.5">
                     Studio Renovation Details
                   </span>
                   
@@ -340,12 +345,12 @@ export default function PortfolioProjects() {
                   {/* Scope of Work */}
                   <div className="mb-6">
                     <h4 className="font-serif text-lg font-medium text-charcoal mb-3 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Scope of Work
+                      <span className="w-1.5 h-1.5 rounded-full bg-kloche-gold" /> Scope of Work
                     </h4>
                     <ul className="space-y-2">
                       {selectedProject.scope.map((item, idx) => (
                         <li key={idx} className="flex items-start gap-2.5 font-sans text-xs text-charcoal/70 font-light leading-snug">
-                          <ChevronRight className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-kloche-gold shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -355,14 +360,14 @@ export default function PortfolioProjects() {
                   {/* Curated Zones */}
                   <div>
                     <h4 className="font-serif text-lg font-medium text-charcoal mb-3 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold" /> Renovated Zones
+                      <span className="w-1.5 h-1.5 rounded-full bg-kloche-gold" /> Renovated Zones
                     </h4>
                     <div className="space-y-4">
                       {selectedProject.zones.map((zone, idx) => (
-                        <div key={idx} className="bg-white border border-[#E2DDD5] p-4">
+                        <div key={idx} className="bg-white border border-[#E2DDD5] p-4 rounded-xs shadow-xs">
                           <h5 className="font-serif text-sm font-semibold text-charcoal mb-1 flex items-center justify-between">
                             {zone.name}
-                            <span className="font-sans text-[8px] tracking-widest text-gold text-xs uppercase font-medium">Bespoke Zone</span>
+                            <span className="font-sans text-[8px] tracking-widest text-kloche-green text-xs uppercase font-bold">Bespoke Zone</span>
                           </h5>
                           <p className="font-sans text-xs text-charcoal/60 font-light leading-relaxed">
                             {zone.description}
@@ -375,14 +380,14 @@ export default function PortfolioProjects() {
 
                 {/* Consult Call CTA */}
                 <div className="pt-8 mt-8 border-t border-[#E2DDD5] flex flex-col sm:flex-row items-center gap-4 justify-between">
-                  <p className="font-sans text-[10px] text-muted tracking-wide text-center sm:text-left">
+                  <p className="font-sans text-[10px] text-muted tracking-wide text-center sm:text-left font-light">
                     Inspired by this aesthetic renovation model? Consult on yours today.
                   </p>
                   <a
                     href="https://wa.me/254717634003?text=Hi%20Kloche%20Interiors%20-%20I%20saw%20your%20Portfolio%20Projects%20renovations%20and%20would%20love%20a%20similar%20consultation."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:w-auto text-center px-5 py-2.5 bg-gold hover:bg-charcoal text-warm-white font-sans text-[10px] tracking-widest uppercase font-medium transition-all duration-300"
+                    className="w-full sm:w-auto text-center px-5 py-2.5 bg-kloche-green hover:bg-kloche-gold text-[#FAF8F4] hover:text-[#1F1C1B] font-sans text-[10px] tracking-widest uppercase font-bold transition-all duration-300 rounded-xs shadow-xs"
                   >
                     Discuss Renovation
                   </a>

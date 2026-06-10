@@ -43,7 +43,7 @@ export default function Process() {
   return (
     <section id="process" className="py-24 bg-[#F5F0E8]/40 relative overflow-hidden border-t border-cream">
       {/* Background Decorative Element */}
-      <div className="absolute top-[20%] left-[5%] text-gold/5 font-serif text-[180px] select-none pointer-events-none md:block hidden">
+      <div className="absolute top-[20%] left-[5%] text-kloche-green/5 font-serif text-[180px] select-none pointer-events-none md:block hidden">
         KLOCHE
       </div>
 
@@ -51,20 +51,20 @@ export default function Process() {
         
         {/* Section Header */}
         <div className="mb-20 text-center">
-          <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold font-semibold mb-3 block">
+          <span className="font-sans text-xs tracking-[0.3em] uppercase text-kloche-green font-bold mb-3 block">
             The Journey
           </span>
           <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight">
-            Our Design <span className="font-serif italic text-gold font-normal">and Execution Process</span>
+            Our Design <span className="font-serif italic text-kloche-green font-normal">and Execution Process</span>
           </h2>
-          <div className="w-16 h-0.5 bg-gold mx-auto mt-6" />
+          <div className="w-16 h-0.5 bg-kloche-gold mx-auto mt-6" />
         </div>
 
         {/* Timeline Grid Wrapper */}
         <div className="relative mt-12">
           
           {/* Horizontal connecting gold line on desktop as requested */}
-          <div className="absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-gold/10 via-gold/40 to-gold/10 -translate-y-12 hidden lg:block" />
+          <div className="absolute top-1/2 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-kloche-green/10 via-kloche-gold/40 to-kloche-green/10 -translate-y-12 hidden lg:block" />
 
           <div id="process-timeline" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {steps.map((step, idx) => {
@@ -77,22 +77,22 @@ export default function Process() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: idx * 0.12 }}
-                  className="bg-white hover:bg-[#FAF8F4] px-5 py-8 border border-gold/10 relative group transition-all duration-300 flex flex-col justify-between min-h-[340px]"
+                  className="bg-white hover:bg-[#FAF8F4] px-5 py-8 border border-kloche-green/10 relative group transition-all duration-300 flex flex-col justify-between min-h-[340px]"
                 >
                   <div>
                     {/* Step Num Circular Header */}
                     <div className="flex justify-between items-start mb-6">
-                      <div className="relative inline-flex items-center justify-center w-11 h-11 rounded-full border border-gold bg-[#FAF8F4] text-gold font-serif text-base font-bold group-hover:bg-[#1C1C1A] group-hover:text-[#FAF8F4] group-hover:border-charcoal transition-all duration-300 shadow-sm">
+                      <div className="relative inline-flex items-center justify-center w-11 h-11 rounded-full border border-kloche-green bg-[#FAF8F4] text-kloche-green font-serif text-base font-bold group-hover:bg-kloche-green group-hover:text-[#FAF8F4] group-hover:border-kloche-green transition-all duration-300 shadow-sm">
                         {step.num}
                       </div>
-                      <StepIcon className="w-5.5 h-5.5 text-[#6B6560] group-hover:text-[#B8965A] transition-colors duration-300 stroke-[1.2]" />
+                      <StepIcon className="w-5.5 h-5.5 text-[#6B6560] group-hover:text-kloche-gold transition-colors duration-300 stroke-[1.2]" />
                     </div>
 
                     {/* Subtitle / Title */}
-                    <span className="font-sans text-[9px] tracking-[0.15em] uppercase text-gold font-semibold block mb-1">
+                    <span className="font-sans text-[9px] tracking-[0.15em] uppercase text-kloche-green font-bold block mb-1">
                       {step.subtitle}
                     </span>
-                    <h3 className="font-serif text-xl font-light text-charcoal tracking-wide mb-3 group-hover:text-[#B8965A] transition-colors duration-200 leading-tight">
+                    <h3 className="font-serif text-xl font-light text-charcoal tracking-wide mb-3 group-hover:text-kloche-green transition-colors duration-200 leading-tight">
                       {step.title}
                     </h3>
 
@@ -103,7 +103,7 @@ export default function Process() {
                   </div>
 
                   {/* Desktop micro gold dash */}
-                  <div className="absolute top-1/2 -right-3 w-6 h-px border-dashed border-gold/30 hidden lg:block last:hidden" />
+                  <div className="absolute top-1/2 -right-3 w-6 h-px border-dashed border-kloche-green/30 hidden lg:block last:hidden" />
                 </motion.div>
               );
             })}

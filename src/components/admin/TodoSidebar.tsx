@@ -86,7 +86,7 @@ export function TodoSidebar({ isOpen, onClose }: TodoSidebarProps) {
       if (res.ok) {
         toast.success("Internal note pinned successfully", {
           icon: "📌",
-          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #FAB012" }
         });
         setNewContent("");
         setSelectedClientId("");
@@ -282,7 +282,7 @@ export function TodoSidebar({ isOpen, onClose }: TodoSidebarProps) {
                         
                         {/* Linked Client badge indicator */}
                         {todo.client ? (
-                          <div className="flex items-center space-x-1 text-[9px] text-[#B8965A] font-semibold tracking-wide uppercase">
+                          <div className="flex items-center space-x-1 text-[9px] text-kloche-green font-bold tracking-wide uppercase">
                             <Bookmark className="w-3 h-3" />
                             <span>Linked client: {todo.client.name}</span>
                           </div>

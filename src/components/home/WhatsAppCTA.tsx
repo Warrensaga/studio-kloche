@@ -2,13 +2,13 @@ import { motion } from "motion/react";
 
 export default function WhatsAppCTA() {
   return (
-    <section id="whatsapp-cta" className="py-20 bg-charcoal text-[#FAF8F4] relative overflow-hidden">
+    <section id="whatsapp-cta" className="py-20 bg-kloche-green text-[#FAF8F4] relative overflow-hidden">
       {/* Decorative borders */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-kloche-gold/30 to-transparent" />
+      <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-kloche-gold/30 to-transparent" />
 
       {/* Decorative ambient background spots */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-gold/5 blur-[80px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full bg-kloche-green/5 blur-[80px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <motion.div
@@ -18,12 +18,12 @@ export default function WhatsAppCTA() {
           transition={{ duration: 0.7 }}
           className="space-y-6"
         >
-          <span className="font-sans text-[11px] tracking-[0.3em] uppercase text-gold font-semibold block">
+          <span className="font-sans text-[11px] tracking-[0.3em] uppercase text-kloche-gold font-bold block">
             Direct Line
           </span>
           
           <h2 className="font-serif text-3xl md:text-5xl font-light tracking-tight text-warm-white">
-            Ready to <span className="italic text-gold">transform</span> your space?
+            Ready to <span className="italic text-kloche-gold font-normal">transform</span> your space?
           </h2>
           
           <p className="font-sans font-light text-sm md:text-base text-[#F5F0E8]/70 max-w-xl mx-auto leading-relaxed">

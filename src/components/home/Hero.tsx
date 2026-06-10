@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { ArrowRight, Star, ShieldCheck, Award, Calendar, FolderClock } from "lucide-react";
+import portKileleshwa from "../../assets/images/port_kileleshwa_1780735907965.png";
 
 export default function Hero() {
   const containerVariants = {
@@ -25,18 +26,18 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen pt-28 pb-12 flex flex-col justify-between overflow-hidden bg-charcoal"
+      className="relative min-h-screen pt-28 pb-12 flex flex-col justify-between overflow-hidden bg-kloche-green"
     >
       {/* Immersive Img Backdrop */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/src/assets/images/port_kileleshwa_1780735907965.png"
+          src={portKileleshwa}
           alt="Luxury living space by Kloche Interiors"
           className="w-full h-full object-cover object-center filter brightness-[0.45] transition-transform duration-[10000ms] scale-105 animate-[zoom_120s_infinite]"
           referrerPolicy="no-referrer"
         />
         {/* Soft natural ambient shading overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-charcoal/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-kloche-dark via-kloche-green/35 to-kloche-dark/75" />
         <div className="absolute inset-0 bg-black/20" />
       </div>
 
@@ -54,8 +55,8 @@ export default function Hero() {
         >
           {/* Studio Tag */}
           <motion.div variants={itemVariants} className="inline-flex items-center space-x-3">
-            <span className="h-0.5 w-10 bg-gold"></span>
-            <span className="font-sans text-xs tracking-[0.35em] uppercase text-goldLight font-semibold">
+            <span className="h-0.5 w-10 bg-kloche-gold"></span>
+            <span className="font-sans text-xs tracking-[0.35em] uppercase text-kloche-gold font-semibold">
               Bespoke Interior Architects · Nairobi
             </span>
           </motion.div>
@@ -63,16 +64,16 @@ export default function Hero() {
           {/* Premium Headline (Transformation & Lifestyle oriented, no cliché AI buzzwords) */}
           <motion.h1
             variants={itemVariants}
-            className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-warm-white leading-[1.08] tracking-tight"
+            className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-neutral-50 leading-[1.08] tracking-tight"
           >
             Sanctuaries of <br />
-            <span className="font-serif italic text-gold font-normal">quiet luxury</span> and form.
+            <span className="font-serif italic text-kloche-gold font-normal">quiet luxury</span> and form.
           </motion.h1>
 
           {/* Value proposition (Conversational, expert-led) */}
           <motion.p
             variants={itemVariants}
-            className="font-sans font-light text-base md:text-xl text-cream/85 leading-relaxed max-w-2xl"
+            className="font-sans font-light text-base md:text-xl text-neutral-100/85 leading-relaxed max-w-2xl"
           >
             We translate architectural volume into timeless, structural homes and spaces. Integrating custom stonework, rich walnut paneling, and warm linen, Kloche Interiors crafts experiences tailored for Nairobi’s most discerning homeowners.
           </motion.p>
@@ -82,16 +83,16 @@ export default function Hero() {
             <a
               id="hero-cta-quote"
               href="#contact"
-              className="px-8 py-4.5 bg-gold hover:bg-gold-light text-white transition-all duration-300 tracking-widest text-xs uppercase font-semibold flex items-center gap-2.5 shadow-lg border border-gold"
+              className="px-8 py-4.5 bg-kloche-green hover:bg-kloche-green-hover text-[#FAF8F4] transition-all duration-300 tracking-widest text-xs uppercase font-semibold flex items-center gap-2.5 shadow-lg border border-kloche-green rounded-xs"
             >
               Book a Consultation <Calendar className="w-4 h-4 text-white/80" />
             </a>
             <a
               id="hero-cta-portfolio"
               href="#portfolio"
-              className="px-10 py-4.5 border border-white/20 hover:border-gold hover:bg-white/5 text-warm-white transition-all duration-300 tracking-widest text-xs uppercase font-medium flex items-center gap-2"
+              className="px-10 py-4.5 border border-white/20 hover:border-kloche-gold hover:bg-white/5 text-neutral-50 transition-all duration-300 tracking-widest text-xs uppercase font-medium flex items-center gap-2"
             >
-              View Our Projects <ArrowRight className="w-4 h-4 text-gold" />
+              View Our Projects <ArrowRight className="w-4 h-4 text-kloche-gold" />
             </a>
           </motion.div>
         </motion.div>
@@ -107,28 +108,28 @@ export default function Hero() {
         >
           {/* Stat 1 */}
           <div className="flex items-center space-x-4 md:justify-center pb-4 md:pb-0">
-            <Star className="w-7 h-7 text-gold fill-gold stroke-[1.5]" />
+            <Star className="w-7 h-7 text-kloche-gold fill-kloche-gold stroke-[1.5]" />
             <div className="text-left">
-              <p className="font-serif text-2xl font-semibold text-warm-white tracking-tight">4.8★ Client Rating</p>
-              <p className="font-sans text-[10px] tracking-widest uppercase text-cream/40">Verified Local Google Reviews</p>
+              <p className="font-serif text-2xl font-semibold text-neutral-50 tracking-tight">4.8★ Client Rating</p>
+              <p className="font-sans text-[10px] tracking-widest uppercase text-neutral-300/85">Verified Local Google Reviews</p>
             </div>
           </div>
 
           {/* Stat 2 */}
           <div className="flex items-center space-x-4 md:justify-center py-4 md:py-0">
-            <ShieldCheck className="w-7 h-7 text-gold stroke-[1.5]" />
+            <ShieldCheck className="w-7 h-7 text-kloche-gold stroke-[1.5]" />
             <div className="text-left artisans-metrics">
-              <p className="font-serif text-2xl font-semibold text-warm-white tracking-tight">100+ Masterpieces</p>
-              <p className="font-sans text-[10px] tracking-widest uppercase text-cream/40">Residential & Commercial Kenya</p>
+              <p className="font-serif text-2xl font-semibold text-neutral-50 tracking-tight">100+ Masterpieces</p>
+              <p className="font-sans text-[10px] tracking-widest uppercase text-neutral-300/85">Residential & Commercial Kenya</p>
             </div>
           </div>
 
           {/* Stat 3 */}
           <div className="flex items-center space-x-4 md:justify-center pt-4 md:pt-0">
-            <Award className="w-7 h-7 text-gold stroke-[1.5]" />
+            <Award className="w-7 h-7 text-kloche-gold stroke-[1.5]" />
             <div className="text-left">
-              <p className="font-serif text-2xl font-semibold text-warm-white tracking-tight">Bespoke Blueprinting</p>
-              <p className="font-sans text-[10px] tracking-widest uppercase text-cream/40">Concept plans to final handover</p>
+              <p className="font-serif text-2xl font-semibold text-neutral-50 tracking-tight">Bespoke Blueprinting</p>
+              <p className="font-sans text-[10px] tracking-widest uppercase text-neutral-300/85">Concept plans to final handover</p>
             </div>
           </div>
         </motion.div>

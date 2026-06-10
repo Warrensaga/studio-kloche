@@ -68,18 +68,18 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-[#FAF8F4] relative border-t border-cream">
+    <section id="contact" className="py-24 bg-[#F5F0E8] relative border-t border-kloche-gold/20">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
           {/* Left Column: Studio info */}
           <div className="lg:col-span-5 space-y-10">
             <div>
-              <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold font-semibold mb-3 block">
+              <span className="font-sans text-xs tracking-[0.3em] uppercase text-kloche-green font-semibold mb-3 block animate-pulse-gold">
                 Get In Touch
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight">
-                Connect with <span className="font-serif italic text-gold font-normal">Our Studio</span>
+              <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight animate-fade-up">
+                Connect with <span className="font-serif italic text-kloche-green font-normal">Our Studio</span>
               </h2>
               <p className="font-sans font-light text-sm text-muted mt-4 leading-relaxed">
                 Describe your commercial design, home remodeling, or short let layout ideas. Our studio handles concept design through complete physical fit-outs.
@@ -88,8 +88,8 @@ export default function ContactForm() {
 
             <div className="space-y-6 pt-2">
               {/* Card Address */}
-              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-gold/10 p-5 rounded-none shadow-sm">
-                <MapPin className="w-5 h-5 text-gold mt-1 flex-shrink-0" />
+              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-kloche-green/10 p-5 rounded-none shadow-xs">
+                <MapPin className="w-5 h-5 text-kloche-green mt-1 flex-shrink-0" />
                 <div className="text-left font-sans text-sm">
                   <h4 className="font-medium text-charcoal tracking-wider uppercase text-xs mb-1">Our Location</h4>
                   <p className="text-muted font-light">Karuna Rd, Westlands</p>
@@ -98,22 +98,22 @@ export default function ContactForm() {
               </div>
 
               {/* Card Phone */}
-              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-gold/10 p-5 rounded-none shadow-sm">
-                <Phone className="w-5 h-5 text-gold mt-1 flex-shrink-0" />
+              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-kloche-green/10 p-5 rounded-none shadow-xs">
+                <Phone className="w-5 h-5 text-kloche-green mt-1 flex-shrink-0" />
                 <div className="text-left font-sans text-sm">
                   <h4 className="font-medium text-charcoal tracking-wider uppercase text-xs mb-1">Call / WhatsApp</h4>
                   <p className="text-muted font-light">
-                    <a href="tel:+254717634003" className="hover:text-gold transition-colors block">
+                    <a href="tel:+254717634003" className="hover:text-kloche-green transition-colors block">
                       0717 634003
                     </a>
                   </p>
-                  <p className="text-emerald-600 font-medium text-xs mt-0.5">● Online (Available 8am – 5pm)</p>
+                  <p className="text-kloche-green font-medium text-xs mt-0.5">● Online (Available 8am – 5pm)</p>
                 </div>
               </div>
 
               {/* Card Hours */}
-              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-gold/10 p-5 rounded-none shadow-sm">
-                <Clock className="w-5 h-5 text-gold mt-1 flex-shrink-0" />
+              <div className="flex items-start space-x-4 bg-[#F5F0E8]/40 border border-kloche-green/10 p-5 rounded-none shadow-xs">
+                <Clock className="w-5 h-5 text-kloche-green mt-1 flex-shrink-0" />
                 <div className="text-left font-sans text-sm">
                   <h4 className="font-medium text-charcoal tracking-wider uppercase text-xs mb-1">Studio Hours</h4>
                   <p className="text-muted font-light">Monday – Saturday: 8:00 AM – 5:00 PM</p>
@@ -123,19 +123,19 @@ export default function ContactForm() {
             </div>
 
             <div className="pt-2">
-              <p className="font-sans text-xs tracking-widest text-[#B8965A] font-semibold uppercase mb-3">Our Social Networks</p>
+              <p className="font-sans text-xs tracking-widest text-kloche-green font-bold uppercase mb-3">Our Social Networks</p>
               <div className="flex space-x-3 text-xs uppercase font-medium">
-                <a href="https://www.instagram.com/klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-gold/20 hover:border-gold hover:text-gold transition-all duration-300">Instagram</a>
-                <a href="https://www.tiktok.com/@klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-gold/20 hover:border-gold hover:text-gold transition-all duration-300">TikTok</a>
-                <a href="https://www.linkedin.com/company/klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-gold/20 hover:border-gold hover:text-gold transition-all duration-300">LinkedIn</a>
+                <a href="https://www.instagram.com/klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-kloche-green/20 hover:border-kloche-gold hover:text-kloche-gold transition-all duration-300">Instagram</a>
+                <a href="https://www.tiktok.com/@klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-kloche-green/20 hover:border-kloche-gold hover:text-kloche-gold transition-all duration-300">TikTok</a>
+                <a href="https://www.linkedin.com/company/klocheinteriors" target="_blank" rel="noopener noreferrer" className="px-3.5 py-2 border border-kloche-green/20 hover:border-kloche-gold hover:text-kloche-gold transition-all duration-300">LinkedIn</a>
               </div>
             </div>
           </div>
 
           {/* Right Column: Form */}
-          <div className="lg:col-span-7 bg-[#F5F0E8]/30 border border-[#E2DDD5]/80 p-8 md:p-10 shadow-sm">
+          <div className="lg:col-span-7 bg-[#F5F0E8]/30 border border-kloche-green/10 p-8 md:p-10 shadow-xs">
             <h3 className="font-serif text-2xl font-light text-charcoal tracking-wide mb-6">
-              Send an <span className="italic text-gold">Enquiry Form</span>
+              Send an <span className="italic text-kloche-green font-normal">Enquiry Form</span>
             </h3>
 
             <form id="contact-interior-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -144,14 +144,14 @@ export default function ContactForm() {
                 {/* Full name */}
                 <div className="flex flex-col text-left font-sans">
                   <label htmlFor="name" className="text-xs uppercase tracking-widest font-medium text-charcoal mb-2">
-                    Full Name <span className="text-gold">*</span>
+                    Full Name <span className="text-kloche-green">*</span>
                   </label>
                   <input
                     id="name"
                     type="text"
                     {...register("name")}
                     placeholder="e.g. Amanda Kimani"
-                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors"
+                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-kloche-green transition-colors"
                   />
                   {errors.name && (
                     <span className="text-red-500 text-xs mt-1.5 font-light">{errors.name.message}</span>
@@ -161,14 +161,14 @@ export default function ContactForm() {
                 {/* Phone */}
                 <div className="flex flex-col text-left font-sans">
                   <label htmlFor="phone" className="text-xs uppercase tracking-widest font-medium text-charcoal mb-2">
-                    Phone Number <span className="text-gold">*</span>
+                    Phone Number <span className="text-kloche-green">*</span>
                   </label>
                   <input
                     id="phone"
                     type="tel"
                     {...register("phone")}
                     placeholder="e.g. 0717 634003"
-                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors"
+                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-kloche-green transition-colors"
                   />
                   {errors.phone && (
                     <span className="text-red-500 text-xs mt-1.5 font-light">{errors.phone.message}</span>
@@ -188,7 +188,7 @@ export default function ContactForm() {
                     type="email"
                     {...register("email")}
                     placeholder="e.g. client@domain.com"
-                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors"
+                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-kloche-green transition-colors"
                   />
                   {errors.email && (
                     <span className="text-red-500 text-xs mt-1.5 font-light">{errors.email.message}</span>
@@ -198,12 +198,12 @@ export default function ContactForm() {
                 {/* Service Dropdown */}
                 <div className="flex flex-col text-left font-sans">
                   <label htmlFor="service" className="text-xs uppercase tracking-widest font-medium text-charcoal mb-2">
-                    Select Service <span className="text-gold">*</span>
+                    Select Service <span className="text-kloche-green">*</span>
                   </label>
                   <select
                     id="service"
                     {...register("service")}
-                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-gold cursor-pointer transition-colors"
+                    className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-kloche-green cursor-pointer transition-colors"
                   >
                     <option value="">-- Choose Option --</option>
                     {servicesList.map((svc) => (
@@ -221,14 +221,14 @@ export default function ContactForm() {
               {/* Description message box */}
               <div className="flex flex-col text-left font-sans">
                 <label htmlFor="message" className="text-xs uppercase tracking-widest font-medium text-charcoal mb-2">
-                  Project Message / Brief <span className="text-gold">*</span>
+                  Project Message / Brief <span className="text-kloche-green">*</span>
                 </label>
                 <textarea
                   id="message"
                   rows={4}
                   {...register("message")}
                   placeholder="Tell us about your space. Do you need concept blueprints, custom remodelling, materials sourcing, or a specific handover date?"
-                  className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-gold transition-colors resize-none"
+                  className="bg-[#FAF8F4] border border-[#E2DDD5] px-4 py-3.5 text-sm focus:outline-none focus:border-kloche-green transition-colors resize-none"
                 />
                 {errors.message && (
                   <span className="text-red-500 text-xs mt-1.5 font-light">{errors.message.message}</span>
@@ -240,15 +240,15 @@ export default function ContactForm() {
                 id="contact-form-submit-btn"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 border border-charcoal text-charcoal bg-transparent hover:bg-[#1C1C1A] hover:text-warm-white transition-all duration-300 tracking-widest text-xs uppercase font-medium flex items-center justify-center gap-2"
+                className="w-full py-4 border border-kloche-green text-[#FAF8F4] bg-kloche-green hover:bg-kloche-gold hover:border-kloche-gold hover:text-[#1F1C1B] transition-all duration-300 tracking-widest text-xs uppercase font-semibold flex items-center justify-center gap-2 rounded-xs shadow-xs"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader className="w-4 h-4 animate-spin text-gold" /> Connecting...
+                    <Loader className="w-4 h-4 animate-spin text-kloche-gold" /> Connecting...
                   </>
                 ) : (
                   <>
-                    Submit & Connect on WhatsApp <ArrowRight className="w-4 h-4 text-gold" />
+                    Submit & Connect on WhatsApp <ArrowRight className="w-4 h-4 text-kloche-gold animate-bounce" />
                   </>
                 )}
               </button>

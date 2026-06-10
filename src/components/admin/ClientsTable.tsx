@@ -172,11 +172,11 @@ export default function ClientsTable({
                   <td className="py-4.5 px-6 text-xs text-[#6B6560]">
                     <div className="flex flex-col space-y-1">
                       <span className="flex items-center gap-1 font-light">
-                        <FolderOpen className="w-3.5 h-3.5 text-[#B8965A]/80" />
+                        <FolderOpen className="w-3.5 h-3.5 text-kloche-green/80" />
                         Enquiries: <strong className="text-charcoal font-medium">{client._count?.enquiries ?? 0}</strong>
                       </span>
                       <span className="flex items-center gap-1 font-light">
-                        <CalendarClock className="w-3.5 h-3.5 text-[#B8965A]/80" />
+                        <CalendarClock className="w-3.5 h-3.5 text-kloche-green/80" />
                         Appts: <strong className="text-charcoal font-medium">{client._count?.appointments ?? 0}</strong>
                       </span>
                     </div>

@@ -61,17 +61,17 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-24 bg-[#FAF8F4] relative border-t border-cream">
+    <section id="services" className="py-24 bg-[#F5F0E8] relative border-t border-kloche-gold/20">
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Title */}
         <div className="mb-16 md:mb-20 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between">
           <div>
-            <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold font-semibold mb-3 block">
+            <span className="font-sans text-xs tracking-[0.3em] uppercase text-kloche-green font-bold mb-3 block">
               Bespoke Expertise
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight">
-              Our Services <span className="font-serif italic text-gold font-normal">and Solutions</span>
+              Our Services <span className="font-serif italic text-kloche-green font-normal">and Solutions</span>
             </h2>
           </div>
           <p className="font-sans font-light text-sm text-muted max-w-md mt-4 md:mt-0 leading-relaxed">
@@ -99,11 +99,11 @@ export default function Services() {
               >
                 {/* Number / Icon top bar */}
                 <div className="flex items-center justify-between mb-8">
-                  <span className="font-serif text-3xl font-light text-gold tracking-widest group-hover:text-goldLight transition-colors duration-500">
+                  <span className="font-serif text-3xl font-light text-kloche-gold tracking-widest transition-colors duration-500">
                     {svc.num}
                   </span>
-                  <div className="w-10 h-10 border border-[#E2DDD5] group-hover:border-gold/30 rounded-none flex items-center justify-center text-gold transition-all duration-500 bg-white group-hover:bg-[#1C1C1A]">
-                    <IconComponent className="w-5 h-5 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="w-10 h-10 border border-[#E2DDD5] group-hover:border-kloche-gold/30 rounded-none flex items-center justify-center text-kloche-green transition-all duration-500 bg-white group-hover:bg-[#1C1C1A]">
+                    <IconComponent className="w-5 h-5 group-hover:text-kloche-gold group-hover:scale-110 transition-transform duration-500" />
                   </div>
                 </div>
 
@@ -118,7 +118,7 @@ export default function Services() {
                 </div>
 
                 {/* Micro Animated Accent Underline */}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-gold group-hover:w-full transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 w-0 h-1 bg-kloche-gold group-hover:w-full transition-all duration-500" />
               </motion.div>
             );
           })}
@@ -130,7 +130,7 @@ export default function Services() {
             Have a custom property or design scope?{" "}
             <a
               href="#contact"
-              className="text-gold font-medium border-b border-gold hover:text-charcoal hover:border-charcoal transition-colors duration-300 pb-0.5 tracking-wider uppercase text-xs pl-1"
+              className="text-kloche-green font-bold border-b border-kloche-green hover:text-kloche-gold hover:border-kloche-gold transition-colors duration-300 pb-0.5 tracking-wider uppercase text-xs pl-1"
             >
               Consult Our Studio
             </a>

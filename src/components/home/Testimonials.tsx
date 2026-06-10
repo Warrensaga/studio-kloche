@@ -27,25 +27,25 @@ export default function Testimonials() {
   ];
 
   return (
-    <section id="testimonials" className="py-24 bg-[#FAF8F4] relative border-t border-cream">
+    <section id="testimonials" className="py-24 bg-[#F5F0E8] relative border-t border-kloche-gold/20">
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         
         {/* Section Title with Google summary metrics */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-8">
           <div>
-            <span className="font-sans text-xs tracking-[0.3em] uppercase text-gold font-semibold mb-3 block">
+            <span className="font-sans text-xs tracking-[0.3em] uppercase text-kloche-green font-bold mb-3 block">
               Direct Feedback
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight">
-              Client Testimonials <span className="font-serif italic text-gold font-normal">and Praises</span>
+              Client Testimonials <span className="font-serif italic text-kloche-green font-normal">and Praises</span>
             </h2>
           </div>
 
           {/* Google aggregate score box */}
-          <div className="flex items-center space-x-1 border border-gold/20 bg-cream/20 py-3.5 px-6 self-start lg:self-auto shadow-sm">
-            <div className="flex text-gold mr-3">
+          <div className="flex items-center space-x-1 border border-kloche-green/25 bg-[#F5F0E8]/50 py-3.5 px-6 self-start lg:self-auto shadow-xs rounded-xs">
+            <div className="flex text-kloche-gold mr-3">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-gold text-gold stroke-none" />
+                <Star key={i} className="w-4 h-4 fill-kloche-gold text-kloche-gold stroke-none" />
               ))}
             </div>
             <div className="text-left">
@@ -64,18 +64,18 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="bg-[#F5F0E8]/40 border border-[#E2DDD5]/70 p-8 flex flex-col justify-between relative group hover:bg-[#1C1C1A] transition-all duration-500"
+              className="bg-[#F5F0E8]/40 border border-[#E2DDD5]/70 p-8 flex flex-col justify-between relative group hover:bg-[#1C1C1A] transition-all duration-500 rounded-xs shadow-xs"
             >
               {/* Massive italic typographic quotes */}
-              <div className="font-serif text-gold/15 text-7xl italic select-none absolute top-4 left-6 group-hover:text-gold/5 transition-colors duration-500">
+              <div className="font-serif text-kloche-green/10 text-7xl italic select-none absolute top-4 left-6 group-hover:text-kloche-green/5 transition-colors duration-500">
                 “
               </div>
 
               <div className="relative z-10 mt-4 mb-8">
                 {/* Visual Stars */}
-                <div className="flex text-gold mb-4">
+                <div className="flex text-kloche-gold mb-4">
                   {[...Array(rev.stars)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-gold stroke-none" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-kloche-gold stroke-none" />
                   ))}
                 </div>
 
@@ -87,14 +87,14 @@ export default function Testimonials() {
               {/* Author Footer */}
               <div className="border-t border-[#E2DDD5]/60 group-hover:border-warm-white/10 pt-4 flex items-center justify-between">
                 <div>
-                  <h4 className="font-sans text-sm font-semibold text-charcoal group-hover:text-[#B8965A] transition-colors duration-500">
+                  <h4 className="font-sans text-sm font-semibold text-charcoal group-hover:text-kloche-gold transition-colors duration-500">
                     {rev.author}
                   </h4>
                   <p className="font-sans text-xs text-muted group-hover:text-warm-white/50 transition-colors duration-500">
                     {rev.role}
                   </p>
                 </div>
-                <MessageSquare className="w-4 h-4 text-gold/40 group-hover:text-[#B8965A] transition-colors duration-500" />
+                <MessageSquare className="w-4 h-4 text-kloche-green/40 group-hover:text-kloche-gold transition-colors duration-500" />
               </div>
             </motion.div>
           ))}

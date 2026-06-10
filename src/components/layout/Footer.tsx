@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Instagram, Linkedin, MapPin, Phone, Mail, Clock } from "lucide-react";
+import Logo from "./Logo";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -30,16 +31,16 @@ export default function Footer() {
   );
 
   return (
-    <footer id="main-footer" className="bg-[#1C1C1A] text-warm-white pt-20 pb-10 border-t border-gold/10">
+    <footer id="main-footer" className="bg-kloche-dark text-warm-white pt-20 pb-10 border-t border-kloche-gold/30">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
         {/* Brand Columns */}
-        <div className="flex flex-col space-y-6">
+        <div className="flex flex-col space-y-6 animate-fade-up">
           <Link
             id="footer-logo"
             to="/"
-            className="font-serif text-3xl font-semibold tracking-wider hover:text-gold transition-colors"
+            className="hover:opacity-90 transition-opacity flex items-center"
           >
-            KLOCHE <span className="text-gold font-light italic">Interiors</span>
+            <Logo variant="horizontal" light={true} size={42} />
           </Link>
           <p className="font-sans font-light text-sm text-[#F5F0E8]/70 leading-relaxed max-w-sm">
             Spaces that inspire, lives well lived. Premium interior architecture and master renovation services in Nairobi, Kenya. We craft bespoke luxury experiences.
@@ -52,7 +53,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram Page"
-              className="w-10 h-10 border border-gold/30 hover:border-gold hover:text-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
+              className="w-10 h-10 border border-kloche-gold/30 hover:border-kloche-gold hover:text-kloche-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
             >
               <Instagram className="w-5 h-5" />
             </a>
@@ -61,7 +62,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok Profile"
-              className="w-10 h-10 border border-gold/30 hover:border-gold hover:text-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
+              className="w-10 h-10 border border-kloche-gold/30 hover:border-kloche-gold hover:text-kloche-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
             >
               <TikTokIcon />
             </a>
@@ -70,7 +71,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn Profile"
-              className="w-10 h-10 border border-gold/30 hover:border-gold hover:text-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
+              className="w-10 h-10 border border-kloche-gold/30 hover:border-kloche-gold hover:text-kloche-gold flex items-center justify-center transition-all duration-300 bg-transparent text-[#F5F0E8]/80 text-sm"
             >
               <Linkedin className="w-5 h-5" />
             </a>
@@ -79,15 +80,15 @@ export default function Footer() {
 
         {/* Services Columns */}
         <div>
-          <h4 className="font-serif text-lg font-medium text-gold tracking-wide mb-6">Our Services</h4>
+          <h4 className="font-serif text-lg font-medium text-kloche-gold tracking-wide mb-6">Our Services</h4>
           <ul className="space-y-3 font-sans text-sm font-light text-[#F5F0E8]/70">
             {services.map((svc) => (
               <li key={svc.name}>
                 <a
                   href={svc.href}
-                  className="hover:text-gold transition-colors duration-200 flex items-center group"
+                  className="hover:text-kloche-gold transition-colors duration-200 flex items-center group"
                 >
-                  <span className="w-0 group-hover:w-1.5 h-px bg-gold mr-0 group-hover:mr-2 transition-all duration-200"></span>
+                  <span className="w-0 group-hover:w-1.5 h-px bg-kloche-gold mr-0 group-hover:mr-2 transition-all duration-200"></span>
                   {svc.name}
                 </a>
               </li>
@@ -97,15 +98,15 @@ export default function Footer() {
 
         {/* Studio Quicklinks */}
         <div>
-          <h4 className="font-serif text-lg font-medium text-gold tracking-wide mb-6">Quick Links</h4>
+          <h4 className="font-serif text-lg font-medium text-kloche-gold tracking-wide mb-6">Quick Links</h4>
           <ul className="space-y-3 font-sans text-sm font-light text-[#F5F0E8]/70">
             {quickLinks.map((link) => (
               <li key={link.name}>
                 <a
                   href={link.href}
-                  className="hover:text-gold transition-colors duration-200 flex items-center group"
+                  className="hover:text-kloche-gold transition-colors duration-200 flex items-center group"
                 >
-                  <span className="w-0 group-hover:w-1.5 h-px bg-gold mr-0 group-hover:mr-2 transition-all duration-200"></span>
+                  <span className="w-0 group-hover:w-1.5 h-px bg-kloche-gold mr-0 group-hover:mr-2 transition-all duration-200"></span>
                   {link.name}
                 </a>
               </li>
@@ -115,29 +116,29 @@ export default function Footer() {
 
         {/* Contact Column */}
         <div className="flex flex-col space-y-4">
-          <h4 className="font-serif text-lg font-medium text-gold tracking-wide mb-6">Contact Studio</h4>
+          <h4 className="font-serif text-lg font-medium text-kloche-gold tracking-wide mb-6">Contact Studio</h4>
           
           <div className="flex items-start space-x-3 text-sm font-light text-[#F5F0E8]/70">
-            <MapPin className="w-4 h-4 text-gold mt-1 flex-shrink-0" />
+            <MapPin className="w-4 h-4 text-kloche-gold mt-1 flex-shrink-0 animate-bounce" />
             <span>Karuna Rd, Nairobi, Kenya</span>
           </div>
 
           <div className="flex items-center space-x-3 text-sm font-light text-[#F5F0E8]/70">
-            <Phone className="w-4 h-4 text-gold flex-shrink-0" />
-            <a href="tel:+254717634003" className="hover:text-gold transition-colors">
+            <Phone className="w-4 h-4 text-kloche-gold flex-shrink-0" />
+            <a href="tel:+254717634003" className="hover:text-kloche-gold transition-colors">
               0717 634003
             </a>
           </div>
 
           <div className="flex items-center space-x-3 text-sm font-light text-[#F5F0E8]/70">
-            <Mail className="w-4 h-4 text-gold flex-shrink-0" />
-            <a href="mailto:klocheinteriors@gmail.com" className="hover:text-gold transition-colors">
+            <Mail className="w-4 h-4 text-kloche-gold flex-shrink-0" />
+            <a href="mailto:klocheinteriors@gmail.com" className="hover:text-kloche-gold transition-colors">
               klocheinteriors@gmail.com
             </a>
           </div>
 
           <div className="flex items-start space-x-3 text-sm font-light text-[#F5F0E8]/70 pt-2">
-            <Clock className="w-4 h-4 text-gold mt-1 flex-shrink-0" />
+            <Clock className="w-4 h-4 text-kloche-gold mt-1 flex-shrink-0" />
             <div>
               <p className="font-medium text-[#FAF8F4]/90">Mon – Sat: 8:00 AM – 5:00 PM</p>
               <p className="text-xs text-[#F5F0E8]/50">Sundays: Closed</p>
@@ -147,13 +148,13 @@ export default function Footer() {
       </div>
 
       {/* Baseline Copyright status */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-gold/10 flex flex-col md:flex-row items-center justify-between text-xs text-[#F5F0E8]/40 font-sans tracking-widest uppercase">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-kloche-gold/10 flex flex-col md:flex-row items-center justify-between text-xs text-[#F5F0E8]/40 font-sans tracking-widest uppercase">
         <p className="mb-4 md:mb-0">
-          <Link to="/admin" className="hover:text-gold/60 transition-all cursor-default mr-1" title="Back office portal">©</Link>{currentYear} Kloche Interiors. All Rights Reserved.
+          <Link to="/admin" className="hover:text-kloche-gold/60 transition-all cursor-default mr-1" title="Back office portal">©</Link>{currentYear} Kloche Interiors. All Rights Reserved.
         </p>
         <div className="flex space-x-6">
-          <a href="#about" className="hover:text-gold transition-colors">Terms of Use</a>
-          <a href="#about" className="hover:text-gold transition-colors">Privacy Policy</a>
+          <a href="#about" className="hover:text-kloche-gold transition-colors">Terms of Use</a>
+          <a href="#about" className="hover:text-kloche-gold transition-colors">Privacy Policy</a>
         </div>
       </div>
     </footer>

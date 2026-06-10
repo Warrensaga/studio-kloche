@@ -18,7 +18,7 @@ export default function WhatsAppFloat() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="mr-3 bg-[#1C1C1A] text-[#FAF8F4] text-xs uppercase tracking-widest font-sans py-2 px-3 border border-gold/20 shadow-lg pointer-events-none whitespace-nowrap"
+            className="mr-3 bg-[#1C1C1A] text-[#FAF8F4] text-xs uppercase tracking-widest font-sans py-2 px-3 border border-kloche-gold/20 shadow-lg pointer-events-none whitespace-nowrap"
           >
             Chat with us
           </motion.div>

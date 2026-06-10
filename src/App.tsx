@@ -79,7 +79,7 @@ function CustomCursor() {
 // 1. PUBLIC VIEW HOMEPAGE
 function PublicHome() {
   return (
-    <div id="public-main-root" className="bg-[#FAF8F4] overflow-x-hidden">
+    <div id="public-main-root" className="bg-[#F5F0E8] overflow-x-hidden">
       <Navbar />
       <Hero />
       <Services />
@@ -803,7 +803,7 @@ function AdminClientDetail() {
                         if (res.ok) {
                           toast.success(`Client migrated to ${newStatus.toUpperCase()}`, {
                             icon: "✨",
-                            style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+                            style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #FAB012" }
                           });
                           // Reload client detail info
                           fetchClientDetails();
@@ -1197,7 +1197,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
         setResetStep(2);
         toast.success("Verification pin generated! Provided below for development ease.", {
           icon: "✉️",
-          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #FAB012" }
         });
       } else {
         toast.error(data.error || "Reset dispatch failed", {
@@ -1229,7 +1229,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
       if (res.ok && data.success) {
         toast.success("Security coordinates synchronized! Try signing in.", {
           icon: "🗝️",
-          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #B8965A" }
+          style: { background: "#1C1C1A", color: "#FAF8F4", border: "1px solid #FAB012" }
         });
         setShowForgot(false);
         setResetStep(1);
@@ -1284,7 +1284,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
             style: {
               background: "#1C1C1A",
               color: "#FAF8F4",
-              border: "1px solid #B8965A"
+              border: "1px solid #FAB012"
             }
           });
         } else {
@@ -1321,7 +1321,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
             style: {
               background: "#1C1C1A",
               color: "#FAF8F4",
-              border: "1px solid #B8965A"
+              border: "1px solid #FAB012"
             }
           });
         } else {
@@ -1343,18 +1343,18 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
   if (isAuthenticated === null) {
     return (
       <div className="min-h-screen bg-[#F5F0E8] flex items-center justify-center">
-        <Loader className="w-8 h-8 animate-spin text-[#B8965A]" />
+        <Loader className="w-8 h-8 animate-spin text-kloche-gold" />
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#FAF8F4] flex flex-col justify-between font-sans text-[#1C1C1A] selection:bg-[#B8965A]/25 relative overflow-hidden">
+      <div className="min-h-screen bg-[#FAF8F4] flex flex-col justify-between font-sans text-[#1C1C1A] selection:bg-kloche-gold/25 relative overflow-hidden">
         {/* Editorial Ornamental lines */}
-        <div className="absolute top-1/2 left-0 w-8 h-[1px] bg-[#B8965A]/40"></div>
-        <div className="absolute top-1/4 right-0 w-8 h-[1px] bg-[#B8965A]/40"></div>
-        <div className="absolute top-16 left-12 text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-semibold hidden md:block">
+        <div className="absolute top-1/2 left-0 w-8 h-[1px] bg-kloche-gold/40"></div>
+        <div className="absolute top-1/4 right-0 w-8 h-[1px] bg-kloche-gold/40"></div>
+        <div className="absolute top-16 left-12 text-[10px] uppercase tracking-[0.4em] text-kloche-green font-bold hidden md:block">
           Est. 2021
         </div>
 
@@ -1362,14 +1362,14 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
         <div className="w-full px-12 py-10 flex justify-between items-center z-20">
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 group text-xs uppercase tracking-widest text-[#1C1C1A] hover:text-[#B8965A] transition-colors cursor-pointer"
+            className="flex items-center gap-2 group text-xs uppercase tracking-widest text-[#1C1C1A] hover:text-kloche-gold transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span>Return to Site</span>
           </button>
           
           <div className="text-xl font-serif tracking-tight font-bold">
-            KLOCHE <span className="text-[#B8965A] italic">Interiors</span>
+            KLOCHE <span className="text-kloche-green italic font-bold">Interiors</span>
           </div>
         </div>
 
@@ -1379,7 +1379,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
             <div className="w-full max-w-md bg-[#F5F0E8] border border-[#1C1C1A]/10 p-10 md:p-12 space-y-8 shadow-xs">
               {/* Header Title */}
               <div className="space-y-3 text-center">
-                <span className="text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-medium block">
+                <span className="text-[10px] uppercase tracking-[0.4em] text-kloche-green font-bold block">
                   Security Authorization
                 </span>
                 <h2 className="text-3xl font-serif tracking-tight text-[#1C1C1A]">
@@ -1405,7 +1405,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                       placeholder="e.g. administrator@kloche.com"
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
-                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                     />
                   </div>
 
@@ -1416,7 +1416,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                   >
                     {loading ? (
                       <>
-                        <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                        <Loader className="w-4 h-4 animate-spin text-kloche-gold" />
                         <span>Requesting Token...</span>
                       </>
                     ) : (
@@ -1427,9 +1427,9 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
               ) : (
                 <form onSubmit={handleResetPasswordSubmit} className="space-y-5">
                   {receivedResetCode && (
-                    <div className="bg-[#B8965A]/10 border border-[#B8965A]/30 p-3.5 text-left text-xs text-[#8C6D37] leading-relaxed">
-                      <p className="font-semibold uppercase tracking-wider text-[9px] mb-1">Authorization Code Dispatched</p>
-                      Reset Code: <strong className="text-charcoal font-bold tracking-widest text-sm bg-white border px-2 py-0.5 border-[#B8965A]/20 ml-1 font-mono">{receivedResetCode}</strong>
+                    <div className="bg-kloche-green/5 border border-kloche-green/20 p-3.5 text-left text-xs text-kloche-green leading-relaxed">
+                      <p className="font-bold uppercase tracking-wider text-[9px] mb-1">Authorization Code Dispatched</p>
+                      Reset Code: <strong className="text-charcoal font-bold tracking-widest text-sm bg-white border px-2 py-0.5 border-kloche-green/10 ml-1 font-mono">{receivedResetCode}</strong>
                     </div>
                   )}
 
@@ -1444,7 +1444,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                       placeholder="e.g. 123456"
                       value={resetCodeInput}
                       onChange={(e) => setResetCodeInput(e.target.value)}
-                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A] font-mono tracking-widest text-center"
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A] font-mono tracking-widest text-center"
                     />
                   </div>
 
@@ -1458,7 +1458,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                       placeholder="Min 6 characters"
                       value={newPasswordInput}
                       onChange={(e) => setNewPasswordInput(e.target.value)}
-                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                     />
                   </div>
 
@@ -1469,7 +1469,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                   >
                     {loading ? (
                       <>
-                        <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                        <Loader className="w-4 h-4 animate-spin text-kloche-gold" />
                         <span>Upgrading Passphrase...</span>
                       </>
                     ) : (
@@ -1504,7 +1504,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
               
               {/* Header Title */}
               <div className="space-y-3 text-center">
-                <span className="text-[10px] uppercase tracking-[0.4em] text-[#B8965A] font-medium block">
+                <span className="text-[10px] uppercase tracking-[0.4em] text-kloche-green font-bold block">
                   {isSignUp ? "Account Registration" : "Security Lock"}
                 </span>
                 <h2 className="text-3xl font-serif tracking-tight text-[#1C1C1A]">
@@ -1512,8 +1512,8 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                 </h2>
                 
                 {!hasAdmins && isSignUp && (
-                  <div className="bg-[#B8965A]/10 border border-[#B8965A]/30 p-3.5 text-left text-xs text-[#8C6D37] leading-relaxed mb-4">
-                    <p className="font-semibold uppercase tracking-wider text-[9px] mb-1">Initialization Mode</p>
+                  <div className="bg-kloche-green/5 border border-kloche-green/20 p-3.5 text-left text-xs text-kloche-green leading-relaxed mb-4">
+                    <p className="font-bold uppercase tracking-wider text-[9px] mb-1">Initialization Mode</p>
                     No administrators detected in database schema. Please register the first master administrator account below.
                   </div>
                 )}
@@ -1541,7 +1541,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                         placeholder="e.g. nairobi_designer"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                       />
                     </div>
 
@@ -1556,7 +1556,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                         placeholder="designer@kloche.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                        className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                       />
                     </div>
                   </>
@@ -1572,7 +1572,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                       placeholder="Enter email or username"
                       value={login}
                       onChange={(e) => setLogin(e.target.value)}
-                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                      className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                       autoFocus
                     />
                   </div>
@@ -1589,7 +1589,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-[#B8965A] transition-colors text-[#1C1C1A]"
+                    className="w-full bg-white border border-[#E2DDD5] px-4 py-2.5 text-sm focus:outline-none focus:border-kloche-green transition-colors text-[#1C1C1A]"
                   />
                 </div>
 
@@ -1627,7 +1627,7 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
                 >
                   {loading ? (
                     <>
-                      <Loader className="w-4 h-4 animate-spin text-[#B8965A]" />
+                      <Loader className="w-4 h-4 animate-spin text-kloche-gold" />
                       <span>Processing...</span>
                     </>
                   ) : (

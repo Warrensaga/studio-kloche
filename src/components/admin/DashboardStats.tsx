@@ -27,14 +27,14 @@ export default function DashboardStats({
       value: newEnquiries,
       icon: MessageSquare,
       desc: "Weekly unread project briefs",
-      color: "border-l-4 border-[#B8965A]",
+      color: "border-l-4 border-kloche-gold",
     },
     {
       title: "Appointments Scheduled",
       value: appointments,
       icon: Calendar,
       desc: "This month's booked scopes",
-      color: "border-l-4 border-emerald-600",
+      color: "border-l-4 border-kloche-green",
     },
     {
       title: "Active Renovations",
@@ -55,8 +55,8 @@ export default function DashboardStats({
             key={card.title}
             whileHover={{ 
               scale: 1.03, 
-              boxShadow: "0 12px 24px -10px rgba(184, 150, 90, 0.15), 0 4px 12px -5px rgba(184, 150, 90, 0.15)",
-              borderColor: "#B8965A"
+              boxShadow: "0 12px 24px -10px rgba(15, 96, 81, 0.15), 0 4px 12px -5px rgba(15, 96, 81, 0.15)",
+              borderColor: "#0F6051"
             }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             className={`bg-[#FAF8F4] border border-[#E2DDD5] p-6 shadow-sm relative overflow-hidden flex flex-col justify-between cursor-pointer ${card.color}`}

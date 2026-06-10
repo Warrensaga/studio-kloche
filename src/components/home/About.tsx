@@ -1,12 +1,13 @@
 import { motion } from "motion/react";
 import { Star, Shield, HelpCircle, Compass, Users } from "lucide-react";
+import aboutMainCraft from "../../assets/images/about_main_craft_1780735888676.png";
 
 export default function About() {
   return (
-    <section id="about" className="py-28 bg-[#F5F0E8]/40 relative overflow-hidden">
+    <section id="about" className="py-28 bg-[#F5F0E8] relative overflow-hidden border-t border-kloche-gold/20">
       {/* Structural subtle grids and lines */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#E2DDD5]/60 to-transparent" />
-      <div className="absolute bottom-0 left-0 w-48 h-px bg-[#B8965A]/25" />
+      <div className="absolute bottom-0 left-0 w-48 h-px bg-kloche-green/20" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
         
@@ -19,10 +20,10 @@ export default function About() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-0 left-0 w-[82%] h-[78%] bg-cream/10 border border-[#B8965A]/15 shadow-2xl overflow-hidden group"
+            className="absolute top-0 left-0 w-[82%] h-[78%] bg-cream/10 border border-kloche-green/15 shadow-2xl overflow-hidden group"
           >
             <img 
-              src="/src/assets/images/about_main_craft_1780735888676.png" 
+              src={aboutMainCraft} 
               alt="Esther Kloche during a bespoke materials study in Westlands" 
               className="absolute inset-0 w-full h-full object-cover filter brightness-[0.85] transition-transform duration-700 group-hover:scale-105" 
               referrerPolicy="no-referrer"
@@ -36,20 +37,20 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="absolute bottom-0 right-0 w-[55%] h-[55%] bg-[#1C1C1A] border-t-2 border-l-2 border-[#B8965A] shadow-2xl p-6 md:p-8 flex flex-col justify-between group"
+            className="absolute bottom-0 right-0 w-[55%] h-[55%] bg-[#1C1C1A] border-t-2 border-l-2 border-kloche-gold shadow-2xl p-6 md:p-8 flex flex-col justify-between group"
           >
             <div className="flex justify-between items-start">
               <span className="font-serif text-[10px] tracking-widest text-[#FAF8F4]/50 leading-relaxed uppercase">Nairobi, KE</span>
-              <div className="flex text-gold">
+              <div className="flex text-kloche-gold">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-gold stroke-none" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-kloche-gold stroke-none" />
                 ))}
               </div>
             </div>
             
             <div className="space-y-2">
               <p className="font-serif text-2xl font-light text-warm-white leading-tight">Authentic Material boards</p>
-              <p className="font-sans text-[9px] tracking-[0.25em] uppercase text-gold">Walnut, Linen, Slate, Brass</p>
+              <p className="font-sans text-[9px] tracking-[0.25em] uppercase text-kloche-gold">Walnut, Linen, Slate, Brass</p>
             </div>
           </motion.div>
 
@@ -59,11 +60,11 @@ export default function About() {
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 100, delay: 0.4 }}
-            className="absolute -right-2 top-24 bg-[#1C1C1A]/95 text-[#FAF8F4] py-4 px-5 rounded-none shadow-xl border border-[#B8965A]/30 flex flex-col items-center justify-center text-center space-y-1.5 z-20 backdrop-blur-xs"
+            className="absolute -right-2 top-24 bg-[#1C1C1A]/95 text-[#FAF8F4] py-4 px-5 rounded-none shadow-xl border border-kloche-green/30 flex flex-col items-center justify-center text-center space-y-1.5 z-20 backdrop-blur-xs"
           >
             <div className="flex items-center space-x-1">
-              <Star className="w-4.5 h-4.5 fill-gold text-gold stroke-none" />
-              <span className="font-serif text-xl font-bold text-goldLight">4.8★</span>
+              <Star className="w-4.5 h-4.5 fill-kloche-gold text-kloche-gold stroke-none" />
+              <span className="font-serif text-xl font-bold text-kloche-gold">4.8★</span>
             </div>
             <span className="font-sans text-[8px] tracking-[0.22em] uppercase text-[#F5F0E8]/50 font-semibold">10 Verified Google Reviews</span>
           </motion.div>
@@ -79,12 +80,12 @@ export default function About() {
         >
           {/* Header */}
           <div>
-            <span className="font-sans text-xs tracking-[0.35em] uppercase text-gold font-semibold mb-3.5 block">
+            <span className="font-sans text-xs tracking-[0.35em] uppercase text-kloche-green font-bold mb-3.5 block">
               Founder Profile & Story
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight leading-[1.12]">
               Esther Kloche <br />
-              <span className="font-serif italic text-gold font-normal">and the Soul of the Studio</span>
+              <span className="font-serif italic text-kloche-green font-normal">and the Soul of the Studio</span>
             </h2>
           </div>
 
@@ -102,7 +103,7 @@ export default function About() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-[#E2DDD5]">
             {/* Phil 1 */}
             <div className="space-y-2">
-              <div className="flex items-center gap-1 text-gold">
+              <div className="flex items-center gap-1 text-kloche-green animate-pulse">
                 <Compass className="w-4.5 h-4.5" />
                 <span className="font-serif text-sm font-semibold tracking-wide text-charcoal">Earthy Harmony</span>
               </div>
@@ -113,7 +114,7 @@ export default function About() {
 
             {/* Phil 2 */}
             <div className="space-y-2">
-              <div className="flex items-center gap-1 text-gold">
+              <div className="flex items-center gap-1 text-kloche-green">
                 <Users className="w-4.5 h-4.5" />
                 <span className="font-serif text-sm font-semibold tracking-wide text-charcoal">Artisan Respect</span>
               </div>
@@ -124,7 +125,7 @@ export default function About() {
 
             {/* Phil 3 */}
             <div className="space-y-2">
-              <div className="flex items-center gap-1 text-gold">
+              <div className="flex items-center gap-1 text-kloche-green">
                 <Shield className="w-4.5 h-4.5" />
                 <span className="font-serif text-sm font-semibold tracking-wide text-charcoal">Physical Integrity</span>
               </div>
@@ -135,12 +136,12 @@ export default function About() {
           </div>
 
           {/* Editorial Pull Quote */}
-          <div className="border-l-2 border-gold pl-6 py-3 my-2 bg-cream/20">
+          <div className="border-l-2 border-kloche-green pl-6 py-3 my-2 bg-cream/20">
             <p className="font-serif italic text-base md:text-lg text-charcoal/90 leading-relaxed mb-3">
               "Kloche Interiors did not compile layout drawings from Pinterest; they constructed a custom sanctuary. The physical timber accents in our Lavington house feel like a living art gallery."
             </p>
-            <p className="font-sans text-xs uppercase tracking-widest text-[#B8965A] font-semibold">
-              — Givence Awuor <span className="font-light text-muted">· Nairobi Residence Client</span>
+            <p className="font-sans text-xs uppercase tracking-widest text-kloche-green font-bold">
+              — Givence Awuor <span className="font-light text-muted font-sans font-light">· Nairobi Residence Client</span>
             </p>
           </div>
 
@@ -149,7 +150,7 @@ export default function About() {
             <a
               id="about-cta-consult"
               href="#contact"
-              className="inline-flex items-center justify-center px-10 py-4 border border-charcoal text-charcoal bg-transparent hover:bg-charcoal hover:text-warm-white transition-all duration-300 tracking-widest text-xs uppercase font-semibold"
+              className="inline-flex items-center justify-center px-10 py-4 bg-kloche-green border border-kloche-green text-[#FAF8F4] hover:bg-kloche-gold hover:border-kloche-gold hover:text-[#1F1C1B] transition-all duration-300 tracking-widest text-xs uppercase font-semibold rounded-xs shadow-xs"
             >
               Meet Esther & The Studio
             </a>

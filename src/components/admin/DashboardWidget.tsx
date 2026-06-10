@@ -91,8 +91,8 @@ export function DashboardWidget() {
                 >
                   <defs>
                     <linearGradient id="colorHours" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#B8965A" stopOpacity={0.25}/>
-                      <stop offset="95%" stopColor="#B8965A" stopOpacity={0.01}/>
+                      <stop offset="5%" stopColor="#0F6051" stopOpacity={0.25}/>
+                      <stop offset="95%" stopColor="#0F6051" stopOpacity={0.01}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2DDD5" />
@@ -111,13 +111,13 @@ export function DashboardWidget() {
                   />
                   <Tooltip 
                     contentStyle={{ backgroundColor: "#1C1C1A", color: "#FAF8F4", border: "none" }}
-                    labelStyle={{ fontWeight: "bold", color: "#B8965A" }}
+                    labelStyle={{ fontWeight: "bold", color: "#0F6051" }}
                   />
                   <Area 
                     type="monotone" 
                     dataKey="consultancyHours" 
                     name="Consultancy Hours"
-                    stroke="#B8965A" 
+                    stroke="#0F6051" 
                     fillOpacity={1} 
                     fill="url(#colorHours)" 
                     strokeWidth={2}
@@ -170,7 +170,7 @@ export function DashboardWidget() {
                   />
                   <Tooltip 
                     contentStyle={{ backgroundColor: "#1C1C1A", color: "#FAF8F4", border: "none" }}
-                    labelStyle={{ fontWeight: "bold", color: "#B8965A" }}
+                    labelStyle={{ fontWeight: "bold", color: "#0F6051" }}
                   />
                   <Bar 
                     dataKey="completionRate" 

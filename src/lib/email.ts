@@ -19,11 +19,17 @@ export async function sendEnquiryEmail(data: EmailData) {
   }
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true, // Use SSL
     auth: {
       user: user,
       pass: pass,
     },
+    // Prevent serverless functions from hanging indefinitely
+    connectionTimeout: 5000, // 5 seconds
+    greetingTimeout: 3000,   // 3 seconds
+    socketTimeout: 5000,     // 5 seconds
   });
 
   // Strip phone non-numeric characters for simple WhatsApp direct link
@@ -35,7 +41,7 @@ export async function sendEnquiryEmail(data: EmailData) {
     subject: `✨ New Client Lead: ${data.name} — ${data.service}`,
     html: `
       <div style="font-family: 'Jost', sans-serif; background-color: #FAF8F4; padding: 40px; color: #1C1C1A; max-width: 600px; margin: 0 auto; border: 1px solid #E2DDD5;">
-        <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; line-height: 1.2; color: #B8965A; border-bottom: 1px solid #B8965A; padding-bottom: 15px; margin-bottom: 25px; font-weight: normal; letter-spacing: 0.02em;">
+        <h2 style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; line-height: 1.2; color: #0F6051; border-bottom: 1px solid #FAB012; padding-bottom: 15px; margin-bottom: 25px; font-weight: normal; letter-spacing: 0.02em;">
           New Studio Lead Received
         </h2>
         
@@ -51,7 +57,7 @@ export async function sendEnquiryEmail(data: EmailData) {
           <tr>
             <td style="padding: 12px 0; border-bottom: 1px solid #E2DDD5; font-weight: 500; color: #6B6560;">Phone Number:</td>
             <td style="padding: 12px 0; border-bottom: 1px solid #E2DDD5; color: #1C1C1A;">
-              <a href="tel:${data.phone}" style="color: #B8965A; text-decoration: none;">${data.phone}</a>
+              <a href="tel:${data.phone}" style="color: #0F6051; text-decoration: none;">${data.phone}</a>
             </td>
           </tr>
           <tr>
@@ -60,11 +66,11 @@ export async function sendEnquiryEmail(data: EmailData) {
           </tr>
           <tr>
             <td style="padding: 12px 0; border-bottom: 1px solid #E2DDD5; font-weight: 500; color: #6B6560;">Requested Service:</td>
-            <td style="padding: 12px 0; border-bottom: 1px solid #E2DDD5; color: #B8965A; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em;">${data.service}</td>
+            <td style="padding: 12px 0; border-bottom: 1px solid #E2DDD5; color: #0F6051; font-weight: 600; text-transform: uppercase; font-size: 13px; letter-spacing: 0.05em;">${data.service}</td>
           </tr>
         </table>
 
-        <div style="background-color: #F5F0E8; padding: 20px; border-left: 3px solid #B8965A; margin-bottom: 30px;">
+        <div style="background-color: #F5F0E8; padding: 20px; border-left: 3px solid #0F6051; margin-bottom: 30px;">
           <h4 style="margin: 0 0 8px 0; font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #1C1C1A; font-weight: 600; letter-spacing: 0.02em;">Message / Instructions:</h4>
           <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #1C1C1A; white-space: pre-wrap;">${data.message}</p>
         </div>
