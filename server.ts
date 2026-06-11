@@ -3,7 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import bcrypt from "bcryptjs";
 import { prisma } from "./src/lib/prisma";
-import { sendEnquiryEmail } from "./src/lib/email";
+import { sendEnquiryEmail, sendClientUpdateEmail } from "./src/lib/email";
 import { enquirySchema, clientSchema, appointmentSchema } from "./src/lib/validations";
 import { sanitizeData } from "./src/lib/sanitizer";
 
@@ -312,10 +312,14 @@ app.post("/api/enquiries", async (req: Request, res: Response) => {
       },
     });
 
-    // Send email dispatch via Nodemailer
-    await sendEnquiryEmail(data);
+    // Send email dispatch via multi-carrier agent (Resend + Fallbacks)
+    const emailDispatchResult = await sendEnquiryEmail(data);
 
-    res.status(201).json({ success: true, id: enquiry.id });
+    res.status(201).json({ 
+      success: true, 
+      id: enquiry.id,
+      emailStatus: emailDispatchResult
+    });
   } catch (error: any) {
     if (error.name === "ZodError") {
       res.status(400).json({ error: error.errors });
@@ -484,6 +488,46 @@ app.patch("/api/clients/:id", async (req: Request, res: Response) => {
     res.json(client);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to update client" });
+  }
+});
+
+// POST /api/clients/:id/send-update-email
+app.post("/api/clients/:id/send-update-email", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { subject, message, status, completionRate } = req.body;
+
+    if (!subject || !message) {
+      res.status(400).json({ error: "Subject and Message fields are required" });
+      return;
+    }
+
+    const client = await prisma.client.findUnique({
+      where: { id }
+    });
+
+    if (!client) {
+      res.status(404).json({ error: "Client not found" });
+      return;
+    }
+
+    if (!client.email) {
+      res.status(400).json({ error: "No registered email address exists for this client profile file." });
+      return;
+    }
+
+    const emailResult = await sendClientUpdateEmail({
+      clientName: client.name,
+      clientEmail: client.email,
+      subject: subject.trim(),
+      message: message.trim(),
+      status: status || client.status || "lead",
+      completionRate: typeof completionRate === "number" ? completionRate : (client.completionRate || 0)
+    });
+
+    res.json({ success: true, ...emailResult });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to dispatch project update email" });
   }
 });
 

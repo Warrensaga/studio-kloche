@@ -1,7 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, Calendar, MessageSquare, ArrowLeft, Paintbrush } from "lucide-react";
+import { LayoutDashboard, Users, Calendar, MessageSquare, ArrowLeft, Paintbrush, X } from "lucide-react";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
 
   const links = [
@@ -28,18 +33,40 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside
-      id="admin-sidebar"
-      className="fixed inset-y-0 left-0 w-64 bg-[#1C1C1A] text-warm-white border-r border-gold/15 flex flex-col justify-between z-30"
-    >
-      <div>
-        {/* Brand Banner */}
-        <div className="p-8 border-b border-gold/10 flex items-center justify-between">
-          <Link to="/admin" className="font-serif text-xl font-bold tracking-wider text-warm-white">
-            KLOCHE <span className="text-gold font-light italic">CRM</span>
-          </Link>
-          <Paintbrush className="w-5 h-5 text-gold" />
-        </div>
+    <>
+      {/* Mobile Sidebar backdrop overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-35 lg:hidden backdrop-blur-xs"
+          onClick={onClose}
+        />
+      )}
+
+      <aside
+        id="admin-sidebar"
+        className={`fixed inset-y-0 left-0 w-64 bg-[#1C1C1A] text-warm-white border-r border-gold/15 flex flex-col justify-between z-40 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div>
+          {/* Brand Banner */}
+          <div className="p-8 border-b border-gold/10 flex items-center justify-between">
+            <Link to="/admin" className="font-serif text-xl font-bold tracking-wider text-warm-white">
+              KLOCHE <span className="text-gold font-light italic">CRM</span>
+            </Link>
+            <div className="flex items-center gap-2">
+              <Paintbrush className="w-5 h-5 text-gold" />
+              {onClose && (
+                <button
+                  onClick={onClose}
+                  className="lg:hidden p-1 text-warm-white/75 hover:text-gold transition-colors focus:outline-none cursor-pointer"
+                  aria-label="Close sidebar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+          </div>
 
         {/* Navigation list */}
         <nav className="p-6 space-y-2">
@@ -93,5 +120,6 @@ export default function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

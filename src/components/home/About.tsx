@@ -24,7 +24,7 @@ export default function About() {
           >
             <img 
               src={aboutMainCraft} 
-              alt="Esther Kloche during a bespoke materials study in Westlands" 
+              alt="Keith Locho during a bespoke materials study in Westlands" 
               className="absolute inset-0 w-full h-full object-cover filter brightness-[0.85] transition-transform duration-700 group-hover:scale-105" 
               referrerPolicy="no-referrer"
             />
@@ -60,7 +60,7 @@ export default function About() {
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 100, delay: 0.4 }}
-            className="absolute -right-2 top-24 bg-[#1C1C1A]/95 text-[#FAF8F4] py-4 px-5 rounded-none shadow-xl border border-kloche-green/30 flex flex-col items-center justify-center text-center space-y-1.5 z-20 backdrop-blur-xs"
+            className="absolute right-2 sm:-right-2 top-24 bg-[#1C1C1A]/95 text-[#FAF8F4] py-4 px-5 rounded-none shadow-xl border border-kloche-green/30 flex flex-col items-center justify-center text-center space-y-1.5 z-20 backdrop-blur-xs"
           >
             <div className="flex items-center space-x-1">
               <Star className="w-4.5 h-4.5 fill-kloche-gold text-kloche-gold stroke-none" />
@@ -84,7 +84,7 @@ export default function About() {
               Founder Profile & Story
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal tracking-tight leading-[1.12]">
-              Esther Kloche <br />
+              Keith Locho <br />
               <span className="font-serif italic text-kloche-green font-normal">and the Soul of the Studio</span>
             </h2>
           </div>
@@ -92,7 +92,7 @@ export default function About() {
           {/* Genuine Narrative Story */}
           <div className="space-y-5 font-sans font-light text-sm md:text-base text-muted leading-relaxed">
             <p>
-              "I started Kloche Interiors with a simple realization: spaces are not just structures to occupy; they are canvases for the soul," says founder and principal interior designer **Esther Kloche**. "After years of practicing design in sub-Saharan Africa, I felt a deep pull to return to honest, natural resources and create a studio on Karuna Road that honors them."
+              "I started Kloche Interiors with a simple realization: spaces are not just structures to occupy; they are canvases for the soul," says founder and principal interior designer **Keith Locho**. "After years of practicing design in sub-Saharan Africa, I felt a deep pull to return to honest, natural resources and create a studio on Karuna Road that honors them."
             </p>
             <p>
               Our studio rejects the cold, sterile assembly-line look that occupies much of modern design. Instead, we spend our days collaborating directly with local Kenyan wood artisans, veteran stonemasons, and textile curators. We seek physical depth over digital render aesthetics—focusing on how raw walnut furniture fits against fine-texture linen, and how light cascades across lime-wash wall formulations.
@@ -152,7 +152,7 @@ export default function About() {
               href="#contact"
               className="inline-flex items-center justify-center px-10 py-4 bg-kloche-green border border-kloche-green text-[#FAF8F4] hover:bg-kloche-gold hover:border-kloche-gold hover:text-[#1F1C1B] transition-all duration-300 tracking-widest text-xs uppercase font-semibold rounded-xs shadow-xs"
             >
-              Meet Esther & The Studio
+              Meet Keith & The Studio
             </a>
           </div>
 

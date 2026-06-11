@@ -30,7 +30,7 @@ import { TodoSidebar } from "./components/admin/TodoSidebar";
 // Icons
 import {
   Users, MessageSquare, Calendar, Briefcase, Plus, Search,
-  RefreshCw, ArrowLeft, Save, Globe, Eye, User, Phone, Mail, MapPin, Send, Loader
+  RefreshCw, ArrowLeft, Save, Globe, Eye, User, Phone, Mail, MapPin, Send, Loader, Menu
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -98,13 +98,22 @@ function PublicHome() {
 
 // 2. ADMIN HOOD
 function AdminLayout({ children }: { children: React.ReactNode }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-[#F5F0E8]/25 pl-64 flex flex-col font-sans">
-      <Sidebar />
-      <header className="bg-white h-16 border-b border-[#E2DDD5]/70 px-8 flex items-center justify-between shadow-xs sticky top-0 z-20">
+    <div className="min-h-screen bg-[#F5F0E8]/25 pl-0 lg:pl-64 flex flex-col font-sans transition-all duration-300">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <header className="bg-white h-16 border-b border-[#E2DDD5]/70 px-4 md:px-8 flex items-center justify-between shadow-xs sticky top-0 z-20">
         <div className="flex items-center space-x-3">
-          <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping" />
-          <p className="text-xs font-semibold tracking-wider text-muted uppercase">Connected to Local SQLite SQLite database</p>
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-1 lg:hidden text-charcoal hover:text-gold transition-colors focus:outline-none cursor-pointer"
+            aria-label="Open CRM Sidebar"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping hidden sm:inline-block" />
+          <p className="text-[10px] md:text-xs font-semibold tracking-wider text-muted uppercase">Connected to Local SQLite database</p>
         </div>
         <a
           href="/"
@@ -114,7 +123,7 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
           <Globe className="w-3.5 h-3.5" /> View Public Site
         </a>
       </header>
-      <main className="p-8 flex-1">{children}</main>
+      <main className="p-4 md:p-8 flex-1 overflow-x-hidden">{children}</main>
     </div>
   );
 }
@@ -498,6 +507,30 @@ function AdminClientDetail() {
   const [noteText, setNoteText] = useState("");
   const [isSavingNote, setIsSavingNote] = useState(false);
 
+  // Email dispatch states
+  const [emailSubject, setEmailSubject] = useState("Project Status Update — Kloche Interiors");
+  const [emailMessage, setEmailMessage] = useState("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState("general");
+
+  const templates: { [key: string]: string } = {
+    general: `We wanted to reach out and give you a quick update on your design process. We are moving along wonderfully and will be in touch with further details soon.\n\nBest regards,\nKeith Locho\nKloche Interiors`,
+    blueprint: `We are absolutely thrilled to let you know that your customized structural design layouts have been formally approved and logged by our development leads! We are now preparing to initiate the bespoke material sourcing phase.\n\nBest regards,\nKeith Locho\nKloche Interiors`,
+    inspection: `Your active spatial blueprint is currently preparing for its scheduled milestone inspection. We have compiled the conceptual renders and would love to review the finishes with you at your convenience.\n\nBest regards,\nKeith Locho\nKloche Interiors`,
+    materials: `We have completed the sourcing of raw travertine blocks and bespoke organic linen swatches for your custom furniture pieces. We are excited to proceed with structural fabrication!\n\nBest regards,\nKeith Locho\nKloche Interiors`
+  };
+
+  const handleTemplateChange = (preset: string) => {
+    setSelectedTemplate(preset);
+    if (!client) return;
+    const greeting = `Hi ${client.name || "Client"},\n\n`;
+    if (preset && templates[preset]) {
+      setEmailMessage(greeting + templates[preset]);
+    } else {
+      setEmailMessage("");
+    }
+  };
+
   const fetchClientDetails = async () => {
     try {
       setLoading(true);
@@ -506,6 +539,7 @@ function AdminClientDetail() {
         const data = await res.json();
         setClient(data);
         setNoteText(data.notes || "");
+        setEmailMessage(`Hi ${data.name || "Client"},\n\nWe wanted to reach out and give you a quick update on your design process. We are moving along wonderfully and will be in touch with further details soon.\n\nBest regards,\nKeith Locho\nKloche Interiors`);
       } else {
         toast.error("Profile file not found");
         navigate("/admin/clients");
@@ -539,6 +573,54 @@ function AdminClientDetail() {
       console.error(err);
     } finally {
       setIsSavingNote(false);
+    }
+  };
+
+  const handleSendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!client?.email) {
+      toast.error("No registered email address exists for this client");
+      return;
+    }
+    if (!emailSubject.trim() || !emailMessage.trim()) {
+      toast.error("Subject and Message body are required");
+      return;
+    }
+
+    setIsSendingEmail(true);
+    try {
+      const res = await fetch(`/api/clients/${client.id}/send-update-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: emailSubject,
+          message: emailMessage,
+          status: client.status,
+          completionRate: client.completionRate
+        }),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        if (result.simulated) {
+          toast.success("Update Simulated! (SMTP credentials not configured)", {
+            icon: "📨",
+            duration: 4000
+          });
+        } else {
+          toast.success(`Success! Quick update email sent to ${client.email}`, {
+            icon: "✅",
+            duration: 4000
+          });
+        }
+      } else {
+        toast.error(result.error || "Failed to dispatch update email");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Network communication failure");
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -777,6 +859,146 @@ function AdminClientDetail() {
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            {/* Direct Project Mailer (Updates Desk) */}
+            <div className="bg-white border border-[#E2DDD5] shadow-xs p-6 text-left">
+              <div className="flex items-center space-x-2.5 border-b border-[#E2DDD5]/70 pb-4 mb-5 border-dashed">
+                <div className="p-2 bg-cream text-gold border border-gold/15">
+                  <Mail className="w-5 h-5 text-gold" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-lg font-medium text-charcoal">Direct Project Mailer (Updates Desk)</h3>
+                  <p className="text-[10px] text-[#6B6560] font-light mt-0.5">Send immediate project update emails directly to the client's registered email inbox.</p>
+                </div>
+              </div>
+
+              {!client.email ? (
+                <div className="bg-[#FAF8F4] border border-gold/20 p-5 text-xs text-muted flex gap-3 text-left">
+                  <span className="text-gold text-lg select-none leading-none">⚠️</span>
+                  <div>
+                    <h5 className="font-semibold text-charcoal mb-0.5 uppercase tracking-wide text-[10px]">Recipient Email Address Missing</h5>
+                    <p className="leading-relaxed font-light text-[#6B6560]">No verified email address exists inside this project's student client folder profile. Please edit the client profile list to associate a direct email address before attempting updates dispatch.</p>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSendEmail} className="space-y-4">
+                  {/* Preset Template Switcher */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase font-bold tracking-widest text-charcoal block">Draft Template Presets</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleTemplateChange("general")}
+                        className={`px-3 py-2 text-[10px] tracking-wider uppercase font-semibold border text-center transition-all cursor-pointer ${
+                          selectedTemplate === "general"
+                            ? "bg-zinc-900 border-zinc-900 text-[#FAF8F4]"
+                            : "bg-[#FAF8F4] border-[#E2DDD5] text-charcoal hover:bg-cream hover:border-gold/30"
+                        }`}
+                      >
+                        General Update
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleTemplateChange("blueprint")}
+                        className={`px-3 py-2 text-[10px] tracking-wider uppercase font-semibold border text-center transition-all cursor-pointer ${
+                          selectedTemplate === "blueprint"
+                            ? "bg-zinc-900 border-zinc-900 text-[#FAF8F4]"
+                            : "bg-[#FAF8F4] border-[#E2DDD5] text-charcoal hover:bg-cream hover:border-gold/30"
+                        }`}
+                      >
+                        Blueprints
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleTemplateChange("inspection")}
+                        className={`px-3 py-2 text-[10px] tracking-wider uppercase font-semibold border text-center transition-all cursor-pointer ${
+                          selectedTemplate === "inspection"
+                            ? "bg-zinc-900 border-zinc-900 text-[#FAF8F4]"
+                            : "bg-[#FAF8F4] border-[#E2DDD5] text-charcoal hover:bg-cream hover:border-gold/30"
+                        }`}
+                      >
+                        Inspection
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleTemplateChange("materials")}
+                        className={`px-3 py-2 text-[10px] tracking-wider uppercase font-semibold border text-center transition-all cursor-pointer ${
+                          selectedTemplate === "materials"
+                            ? "bg-zinc-900 border-zinc-900 text-[#FAF8F4]"
+                            : "bg-[#FAF8F4] border-[#E2DDD5] text-charcoal hover:bg-cream hover:border-gold/30"
+                        }`}
+                      >
+                        Materials
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* To Recipient Banner (Non-editable for safety) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase font-bold tracking-widest text-[#6B6560] block">Recipient Email</label>
+                      <input
+                        type="email"
+                        disabled
+                        value={client.email}
+                        className="w-full bg-[#FAF8F4] border border-[#E2DDD5] px-3 py-2 text-xs text-[#6B6560]/70 cursor-not-allowed outline-none"
+                      />
+                    </div>
+
+                    {/* Subject Line */}
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase font-bold tracking-widest text-[#6B6560] block">Subject Line</label>
+                      <input
+                        type="text"
+                        value={emailSubject}
+                        onChange={(e) => setEmailSubject(e.target.value)}
+                        placeholder="e.g. Project Status Update — Kloche Interiors"
+                        className="w-full bg-[#FAF8F4] border border-[#E2DDD5] px-3 py-2 text-xs focus:ring-0 focus:outline-none focus:border-gold text-[#1C1C1A]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Custom Message Body content */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[10px] uppercase font-bold tracking-widest text-[#6B6560]">Message Content</label>
+                      <span className="text-[9px] text-[#6B6560] font-light italic">Appends completion rate ({client.completionRate || 0}%)</span>
+                    </div>
+                    <textarea
+                      value={emailMessage}
+                      onChange={(e) => setEmailMessage(e.target.value)}
+                      rows={6}
+                      placeholder="Write custom project update notes here..."
+                      className="w-full bg-[#FAF8F4] border border-[#E2DDD5] p-3 text-xs focus:ring-0 focus:outline-none focus:border-gold resize-none leading-relaxed text-[#1C1C1A] font-sans"
+                    />
+                  </div>
+
+                  {/* Operational parameters note */}
+                  <div className="bg-[#FAF8F4]/70 p-3.5 border border-[#E2DDD5] text-[10px] text-[#6B6560] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <span className="leading-tight">
+                      ℹ️ Layout parameters <strong className="text-gold">{client.status.toUpperCase()}</strong> and progress of <strong className="text-gold">{client.completionRate || 0}%</strong> are packaged automatically into the email payload.
+                    </span>
+                    <button
+                      type="submit"
+                      disabled={isSendingEmail}
+                      className="inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-kloche-green hover:bg-zinc-800 text-[#FAF8F4] font-sans text-[10px] tracking-widest uppercase font-bold transition-all duration-300 rounded-none shadow-xs disabled:opacity-50 cursor-pointer"
+                    >
+                      {isSendingEmail ? (
+                        <>
+                          <Loader className="w-3.5 h-3.5 animate-spin text-white" />
+                          <span>Dispatching...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Send Update Email</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
 
             {/* Chronological Status History Timeline */}

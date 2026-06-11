@@ -44,12 +44,35 @@ export default function ContactForm() {
         body: JSON.stringify(data),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to upload lead metadata");
+        throw new Error(result.error || "Server rejected lead metadata ingestion");
       }
 
-      await response.json();
-      toast.success("Enquiry logged and notification sent!");
+      // Check the email dispatch outcome
+      const emailStatus = result.emailStatus;
+      if (emailStatus) {
+        if (emailStatus.success) {
+          const isSmtp = emailStatus.channel === "smtp";
+          toast.success(
+            `Enquiry logged and notification paths successfully online via ${isSmtp ? "corporate SMTP" : "premium Resend secure API"}!`,
+            { duration: 5500 }
+          );
+        } else if (emailStatus.simulated) {
+          toast.success(
+            "Enquiry logged at our Westlands database! Note: Email delivery runs in local simulation (configure RESEND_API_KEY context).",
+            { duration: 7000, icon: "📋" }
+          );
+        } else if (emailStatus.error) {
+          toast.error(
+            `Enquiry saved securely. However, notification alert systems are offline: ${emailStatus.error}`,
+            { duration: 8000 }
+          );
+        }
+      } else {
+        toast.success("Enquiry logged successfully in the local CRM!");
+      }
 
       // Open WhatsApp pre-filled message with details in a new tab
       const cleanPhone = "+254717634003";
@@ -60,8 +83,8 @@ export default function ContactForm() {
 
       reset();
     } catch (err: any) {
-      console.error(err);
-      toast.error("Form logged locally, but email server is unresponsive.");
+      console.error("[CONTACT_FORM_DISPATCH_FAILURE]:", err);
+      toast.error(`Enquiry submission failed: ${err.message || "Unspecified connection timeout"}`);
     } finally {
       setIsSubmitting(false);
     }

@@ -59,7 +59,7 @@ export default function Portfolio() {
       goal: "Compose a deeply personal environment that unifies the owner's extensive collection of East African fine art with functional entertainment zones.",
       challenge: "Transporting and installing a monolithic, customized 3-meter solid travertine dining slab through narrow helical stair coordinates.",
       outcome: "We rigged the dining slab externally via secure crane coordinates, building a custom steel-reinforced structural table frame, complemented by tailored Belgian linen chairs.",
-      collabs: "Esther Kloche Sourcing, Local Fine Art Curators",
+      collabs: "Keith Locho Sourcing, Local Fine Art Curators",
     },
     {
       id: 4,

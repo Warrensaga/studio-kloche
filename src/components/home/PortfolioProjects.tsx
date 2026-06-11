@@ -282,7 +282,7 @@ export default function PortfolioProjects() {
               </button>
 
               {/* Column 1: Image & Metrics (Fixed on Left in Large Screens) */}
-              <div className="w-full md:w-[45%] relative bg-[#1F1C1B] flex flex-col min-h-[250px] md:min-h-0">
+              <div className="w-full md:w-[45%] relative bg-[#1F1C1B] flex flex-col min-h-[180px] sm:min-h-[250px] md:min-h-0 shrink-0">
                 <div className="flex-1 relative">
                   <img
                     src={selectedProject.image}
