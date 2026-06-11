@@ -10,5 +10,10 @@
       "destination": "/index.html"
     }
   ],
-  "framework": "vite"
+  "framework": "vite",
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "dist/**"
+    }
+  }
 }
